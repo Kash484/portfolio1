@@ -658,15 +658,585 @@ console.<span class="fn">log</span>(!<span class="fn">canPass</span>(<span class
 
 <p>On top of the three levels I made, my teammates built some other games that hit the same CS111 concepts from different directions:</p>
 
-<div style="text-align:center; margin: 28px 0;">
-  <a class="play-button" href="https://rashig-1804.github.io/csse_teamrepo/hacks/TicTacToe/" target="_blank" rel="noopener noreferrer">▶ Tic-Tac-Toe</a>
-  <a class="play-button" href="https://rashig-1804.github.io/csse_teamrepo/connect4/" target="_blank" rel="noopener noreferrer">▶ Connect 4</a>
-  <a class="play-button" href="https://aadis12.github.io/student/hacks/whackamole" target="_blank" rel="noopener noreferrer">▶ Whack-a-Mole</a>
+<div class="callout callout-blue">
+  <strong>How they connect:</strong> Pong demonstrates OOP classes (Paddle, Ball, Renderer), physics math operators for velocity and collision, boolean game-state flags, and iteration via <code>requestAnimationFrame</code>. Connect 4 uses timer-driven state transitions (booleans + iteration). Blackjack uses arrays for the deck, nested conditionals for hand evaluation, and mathematical expressions for card values and betting.
 </div>
 
-<div class="callout callout-blue">
-  <strong>How they connect:</strong> Tic-Tac-Toe shows 2D array win checking (arrays + nested conditionals). Connect 4 uses timer-driven state transitions (booleans + iteration). Whack-a-Mole uses <code>Math.random()</code> for spawning and template literals for the score display — mathematical and string operators directly in the game loop.
+<h3>Blackjack</h3>
+<p>Blackjack is embedded live below — it demonstrates arrays (deck shuffling and hand management), nested conditionals (ace value switching, win/loss/tie logic), mathematical expressions (hand totalling, betting), and strings (card suit and value display). Each round auto-bets $10:</p>
+
+<div style="margin: 24px 0;">
+  <div id="bj-menu" style="text-align:center; padding: 32px; background:#2a1a0c; border:1px solid #5a3920; border-radius:8px;">
+    <h2 style="color:#faf4e8; font-family:'Playfair Display',serif; font-style:italic; margin-bottom:16px;">Blackjack</h2>
+    <button onclick="bjStartGame()" style="padding:10px 22px; margin:8px; font-size:15px; background:#c8832a; color:#faf4e8; border:1px solid #5a3920; border-radius:4px; cursor:pointer; font-family:'Lora',serif;">Play Game</button>
+    <button onclick="bjShowHowTo()" style="padding:10px 22px; margin:8px; font-size:15px; background:#3d2710; color:#e8d5b7; border:1px solid #5a3920; border-radius:4px; cursor:pointer; font-family:'Lora',serif;">How to Play</button>
+  </div>
+
+  <div id="bj-how-to" style="display:none; text-align:center; padding:32px; background:#2a1a0c; border:1px solid #5a3920; border-radius:8px; color:#e8d5b7; font-family:'Lora',serif;">
+    <h2 style="color:#faf4e8; font-family:'Playfair Display',serif; font-style:italic; margin-bottom:12px;">How to Play</h2>
+    <p style="margin-bottom:8px;">Get as close to 21 as possible without going over.</p>
+    <p style="margin-bottom:8px;">Face cards = 10 &nbsp;·&nbsp; Aces = 1 or 11.</p>
+    <p style="margin-bottom:16px;">Dealer hits on 16. Each round bets $10 automatically.</p>
+    <button onclick="bjGoBack()" style="padding:10px 22px; font-size:15px; background:#c8832a; color:#faf4e8; border:1px solid #5a3920; border-radius:4px; cursor:pointer; font-family:'Lora',serif;">Back</button>
+  </div>
+
+  <div id="bj-game-container" style="display:none; background:#2a1a0c; border:1px solid #5a3920; border-radius:8px; padding:24px; font-family:'Lora',serif; color:#e8d5b7;">
+    <h2 style="color:#faf4e8; font-family:'Playfair Display',serif; font-style:italic; text-align:center; margin-bottom:4px;">Blackjack</h2>
+    <p style="text-align:center; color:#9c7450; font-size:13px; margin-bottom:20px;">Dealer hits on 16</p>
+
+    <div style="margin-bottom:20px;">
+      <h3 style="color:#c8832a; font-family:'Playfair Display',serif; font-style:italic;">Dealer's Hand: <span id="bj-dealer-score" style="color:#faf4e8;">0</span></h3>
+      <div style="display:flex; flex-direction:column; align-items:center;">
+        <div id="bj-dealer-cards" style="display:flex; justify-content:center; min-height:120px; flex-wrap:wrap;"></div>
+        <div id="bj-dealer-points" style="font-size:14px; color:#9c7450; margin-top:4px;"></div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:20px;">
+      <h3 style="color:#c8832a; font-family:'Playfair Display',serif; font-style:italic;">Your Hand: <span id="bj-player-score" style="color:#faf4e8;">0</span></h3>
+      <div style="display:flex; flex-direction:column; align-items:center;">
+        <div id="bj-player-cards" style="display:flex; justify-content:center; min-height:120px; flex-wrap:wrap;"></div>
+        <div id="bj-player-points" style="font-size:14px; color:#9c7450; margin-top:4px;"></div>
+      </div>
+    </div>
+
+    <div style="text-align:center; margin-bottom:12px;">
+      <button id="bj-new-game-btn" style="padding:10px 20px; margin:6px; font-size:15px; background:#3d2710; color:#e8d5b7; border:1px solid #5a3920; border-radius:4px; cursor:pointer; font-family:'Lora',serif;">New Round</button>
+      <button id="bj-hit-btn" style="padding:10px 20px; margin:6px; font-size:15px; background:#c8832a; color:#faf4e8; border:1px solid #5a3920; border-radius:4px; cursor:pointer; font-family:'Lora',serif;">Hit</button>
+      <button id="bj-stand-btn" style="padding:10px 20px; margin:6px; font-size:15px; background:#c8832a; color:#faf4e8; border:1px solid #5a3920; border-radius:4px; cursor:pointer; font-family:'Lora',serif;">Stand</button>
+    </div>
+
+    <div style="text-align:center; margin-bottom:12px;">
+      <span style="color:#d4a030; font-weight:bold; font-size:15px;">💰 Balance: $<span id="bj-money">100</span> &nbsp;·&nbsp; Bet: $<span id="bj-bet-display">0</span></span>
+    </div>
+
+    <p id="bj-message" style="text-align:center; font-weight:bold; color:#faf4e8; font-size:16px; min-height:24px;"></p>
+  </div>
 </div>
+
+<style>
+  .bj-card {
+    width: 72px; height: 100px; border: 1px solid #5a3920; border-radius: 6px;
+    margin: 5px; display: flex; justify-content: center; align-items: center;
+    font-size: 22px; font-weight: bold; background: #faf4e8;
+    box-shadow: 2px 2px 6px rgba(0,0,0,0.4);
+  }
+</style>
+
+<script>
+(function(){
+  let bjDeck=[], bjPlayerHand=[], bjDealerHand=[], bjGameOver=false;
+  let bjMoney=100, bjBet=0;
+
+  function bjStartGame(){
+    document.getElementById('bj-menu').style.display='none';
+    document.getElementById('bj-game-container').style.display='block';
+    bjNewGame();
+  }
+  function bjShowHowTo(){document.getElementById('bj-menu').style.display='none';document.getElementById('bj-how-to').style.display='block';}
+  function bjGoBack(){document.getElementById('bj-how-to').style.display='none';document.getElementById('bj-menu').style.display='block';}
+  window.bjStartGame=bjStartGame; window.bjShowHowTo=bjShowHowTo; window.bjGoBack=bjGoBack;
+
+  function bjCreateDeck(){
+    const suits=["♠","♥","♦","♣"], values=["A","2","3","4","5","6","7","8","9","10","J","Q","K"];
+    let d=[];
+    for(let s of suits) for(let v of values) d.push({value:v,suit:s});
+    return bjShuffle(d);
+  }
+  function bjShuffle(d){
+    for(let i=d.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[d[i],d[j]]=[d[j],d[i]];}
+    return d;
+  }
+  function bjCardValue(c){if(["J","Q","K"].includes(c.value))return 10;if(c.value==="A")return 11;return parseInt(c.value);}
+  function bjCalcHand(hand){let v=0,aces=0;for(let c of hand){v+=bjCardValue(c);if(c.value==="A")aces++;}while(v>21&&aces>0){v-=10;aces--;}return v;}
+
+  function bjMakeCard(c,hidden=false){
+    const el=document.createElement('div');el.className='bj-card';
+    if(hidden){el.textContent='🂠';el.style.color='#2a1a0c';}
+    else{el.textContent=c.value+c.suit;el.style.color=(c.suit==="♥"||c.suit==="♦")?"#b91c1c":"#120b05";}
+    return el;
+  }
+
+  function bjRenderHand(hand,container,pointsEl){
+    container.innerHTML='';
+    for(let c of hand)container.appendChild(bjMakeCard(c));
+    pointsEl.textContent='Total: '+bjCalcHand(hand);
+  }
+
+  function bjRenderDealerInitial(){
+    const dc=document.getElementById('bj-dealer-cards');
+    dc.innerHTML='';
+    dc.appendChild(bjMakeCard(bjDealerHand[0]));
+    dc.appendChild(bjMakeCard(null,true));
+    document.getElementById('bj-dealer-points').textContent='Showing: '+bjCardValue(bjDealerHand[0]);
+  }
+
+  function bjUpdateMoney(){
+    document.getElementById('bj-money').textContent=bjMoney;
+    document.getElementById('bj-bet-display').textContent=bjBet;
+  }
+
+  function bjNewGame(){
+    if(bjMoney<=0){document.getElementById('bj-message').textContent="You're out of money! Refresh the page to restart.";return;}
+    bjBet=Math.min(10,bjMoney);
+    bjDeck=bjCreateDeck();
+    bjPlayerHand=[bjDeck.pop(),bjDeck.pop()];
+    bjDealerHand=[bjDeck.pop(),bjDeck.pop()];
+    bjGameOver=false;
+    bjRenderHand(bjPlayerHand,document.getElementById('bj-player-cards'),document.getElementById('bj-player-points'));
+    bjRenderDealerInitial();
+    document.getElementById('bj-dealer-score').textContent=bjCardValue(bjDealerHand[0]);
+    document.getElementById('bj-player-score').textContent=bjCalcHand(bjPlayerHand);
+    document.getElementById('bj-message').textContent='Bet: $'+bjBet+' — Your move.';
+    bjUpdateMoney();
+  }
+
+  function bjHit(){
+    if(bjGameOver)return;
+    bjPlayerHand.push(bjDeck.pop());
+    bjRenderHand(bjPlayerHand,document.getElementById('bj-player-cards'),document.getElementById('bj-player-points'));
+    document.getElementById('bj-player-score').textContent=bjCalcHand(bjPlayerHand);
+    if(bjCalcHand(bjPlayerHand)>21)bjEndRound('lose');
+  }
+
+  function bjStand(){
+    if(bjGameOver)return;
+    bjRenderHand(bjDealerHand,document.getElementById('bj-dealer-cards'),document.getElementById('bj-dealer-points'));
+    while(bjCalcHand(bjDealerHand)<17){bjDealerHand.push(bjDeck.pop());}
+    bjRenderHand(bjDealerHand,document.getElementById('bj-dealer-cards'),document.getElementById('bj-dealer-points'));
+    document.getElementById('bj-dealer-score').textContent=bjCalcHand(bjDealerHand);
+    document.getElementById('bj-player-score').textContent=bjCalcHand(bjPlayerHand);
+    const pv=bjCalcHand(bjPlayerHand),dv=bjCalcHand(bjDealerHand);
+    if((pv>dv&&pv<=21)||dv>21)bjEndRound('win');
+    else if(dv>pv&&dv<=21)bjEndRound('lose');
+    else bjEndRound('tie');
+  }
+
+  function bjEndRound(result){
+    bjGameOver=true;
+    const msg=document.getElementById('bj-message');
+    if(result==='win'){bjMoney+=bjBet;msg.textContent='You win! +$'+bjBet+' — Balance: $'+bjMoney;}
+    else if(result==='lose'){bjMoney-=bjBet;msg.textContent='Dealer wins. -$'+bjBet+' — Balance: $'+bjMoney;}
+    else{msg.textContent="Push — it's a tie. Balance: $"+bjMoney;}
+    bjUpdateMoney();
+  }
+
+  document.getElementById('bj-new-game-btn').addEventListener('click',bjNewGame);
+  document.getElementById('bj-hit-btn').addEventListener('click',bjHit);
+  document.getElementById('bj-stand-btn').addEventListener('click',bjStand);
+})();
+</script>
+
+<h3>Pong</h3>
+<p>Pong is embedded live below — it demonstrates OOP (separate <code>Paddle</code>, <code>Ball</code>, <code>Renderer</code>, and <code>Game</code> classes), mathematical operators for physics (velocity, spin, collision), boolean flags for game state, and a <code>requestAnimationFrame</code> loop for smooth animation. Choose PvP or AI mode:</p>
+
+<div style="margin: 24px 0; text-align: center;">
+  <div style="margin-bottom:12px;">
+    <button id="pongStartPvP" style="margin-right:8px; padding:8px 16px; font-size:15px; background:#c8832a; color:#faf4e8; border:1px solid #5a3920; border-radius:4px; cursor:pointer; font-family:'Lora',serif; letter-spacing:1px;">Start PvP</button>
+    <button id="pongStartAI"  style="padding:8px 16px; font-size:15px; background:#c8832a; color:#faf4e8; border:1px solid #5a3920; border-radius:4px; cursor:pointer; font-family:'Lora',serif; letter-spacing:1px;">Start AI</button>
+  </div>
+  <canvas id="pongCanvas" width="800" height="500" style="border:2px solid #5a3920; background:#000; max-width:100%;"></canvas>
+  <br>
+  <button id="pongRestartBtn" style="display:none; margin-top:15px; padding:10px 20px; font-size:16px; border:none; border-radius:6px; background:#c8832a; color:#faf4e8; cursor:pointer; font-family:'Lora',serif;">Restart Game</button>
+</div>
+
+<script>
+(function() {
+const PongConfig = {
+  canvas: { width: 800, height: 500 },
+  paddle: { width: 10, height: 100, speed: 10.5 },
+  ball: { radius: 10, baseSpeedX: 5, maxRandomY: 2, spinFactor: 0.3, maxSpeed: 15 },
+  powerUp: { spawnMinSec: 6, spawnMaxSec: 14, width: 28, height: 14, durationSec: 6, colors: { bg: '#ffdd57', border: '#ffaa00' } },
+  bumper: { enabledAtScore: 9, radius: 40, color: "#ed1111ff" },
+  rules: { winningScore: 11 },
+  keys: { p1Up: "w", p1Down: "s", p2Up: "ArrowUp", p2Down: "ArrowDown" },
+  visuals: { bg: "#000", fg: "#fff", text: "#fff", gameOver: "red", win: "yellow" }
+};
+
+class PVector2 { constructor(x=0,y=0){this.x=x;this.y=y;} }
+
+class PPaddle {
+  constructor(x,y,w,h,speed,bh){this.position=new PVector2(x,y);this.width=w;this.height=h;this.speed=speed;this.boundsHeight=bh;}
+  move(dy){this.position.y=Math.min(this.boundsHeight-this.height,Math.max(0,this.position.y+dy));}
+  rect(){return{x:this.position.x,y:this.position.y,w:this.width,h:this.height};}
+}
+
+class PBall {
+  constructor(radius,bw,bh){this.radius=radius;this.boundsWidth=bw;this.boundsHeight=bh;this.position=new PVector2();this.velocity=new PVector2();this.reset(true);}
+  reset(rand=false){
+    this.position.x=this.boundsWidth/2;this.position.y=this.boundsHeight/2;
+    const dir=rand&&Math.random()>0.5?1:-1;
+    this.velocity.x=dir*PongConfig.ball.baseSpeedX;
+    this.velocity.y=(Math.random()*(2*PongConfig.ball.maxRandomY))-PongConfig.ball.maxRandomY;
+  }
+  update(){
+    this.position.x+=this.velocity.x;this.position.y+=this.velocity.y;
+    if(this.position.y+this.radius>this.boundsHeight||this.position.y-this.radius<0)this.velocity.y*=-1;
+  }
+}
+
+class PInput {
+  constructor(){this.keys={};
+    document.addEventListener("keydown",e=>{if(["ArrowUp","ArrowDown"," ","Spacebar"].includes(e.key))e.preventDefault();this.keys[e.key]=true;});
+    document.addEventListener("keyup",e=>{this.keys[e.key]=false;});
+  }
+  isDown(k){return!!this.keys[k];}
+}
+
+class PRenderer {
+  constructor(ctx){this.ctx=ctx;}
+  clear(w,h){this.ctx.fillStyle=PongConfig.visuals.bg;this.ctx.fillRect(0,0,w,h);}
+  rect(r,color=PongConfig.visuals.fg){this.ctx.fillStyle=color;this.ctx.fillRect(r.x,r.y,r.w,r.h);}
+  circle(ball,color=PongConfig.visuals.fg){this.ctx.fillStyle=color;this.ctx.beginPath();this.ctx.arc(ball.position.x,ball.position.y,ball.radius,0,Math.PI*2);this.ctx.closePath();this.ctx.fill();}
+  text(t,x,y,color=PongConfig.visuals.text){this.ctx.fillStyle=color;this.ctx.font="30px Arial";this.ctx.fillText(t,x,y);}
+}
+
+class PongGame {
+  constructor(canvasEl,restartBtn,opts={}){
+    this.canvas=canvasEl;this.ctx=canvasEl.getContext('2d');this.renderer=new PRenderer(this.ctx);this.ai=!!opts.ai;
+    this.input=new PInput();
+    const{width,height,speed}=PongConfig.paddle;
+    this.paddleLeft=new PPaddle(0,(PongConfig.canvas.height-height)/2,width,height,speed,PongConfig.canvas.height);
+    this.paddleRight=new PPaddle(PongConfig.canvas.width-width,(PongConfig.canvas.height-height)/2,width,height,speed,PongConfig.canvas.height);
+    this.balls=[new PBall(PongConfig.ball.radius,PongConfig.canvas.width,PongConfig.canvas.height)];
+    this.multiTriggered={p1:0,p2:0};
+    this.scores={p1:0,p2:0};
+    this.gameOver=false;this.restartBtn=restartBtn;this.paused=false;this.audioCtx=null;
+    this.powerUp=null;this.nextPowerUpAt=performance.now()+this.randRange(PongConfig.powerUp.spawnMinSec*1000,PongConfig.powerUp.spawnMaxSec*1000);
+    this.activeEffects={left:null,right:null};this.replayCountdown=null;
+    this.restartBtn.addEventListener("click",()=>this.restart());
+    document.addEventListener('keydown',(e)=>{if(e.key===' '||e.key==='Spacebar'){e.preventDefault();this.togglePause();}});
+    this.loop=this.loop.bind(this);
+  }
+  randRange(min,max){return Math.random()*(max-min)+min;}
+  togglePause(){this.paused=!this.paused;if(!this.paused)this.loop();}
+  handleInput(){
+    if(this.gameOver)return;
+    if(this.input.isDown(PongConfig.keys.p1Up))this.paddleLeft.move(-this.paddleLeft.speed);
+    if(this.input.isDown(PongConfig.keys.p1Down))this.paddleLeft.move(this.paddleLeft.speed);
+    if(this.ai){this.updateAI();}else{
+      if(this.input.isDown(PongConfig.keys.p2Up))this.paddleRight.move(-this.paddleRight.speed);
+      if(this.input.isDown(PongConfig.keys.p2Down))this.paddleRight.move(this.paddleRight.speed);
+    }
+  }
+  updateAI(){
+    if(!this.balls||!this.balls.length)return;
+    const mid=PongConfig.canvas.width/2;
+    const candidates=this.balls.filter(b=>b.position.x>=mid);
+    if(!candidates.length)return;
+    let target=candidates[0],bestDist=Math.abs(target.position.y-(this.paddleRight.position.y+this.paddleRight.height/2));
+    for(let i=1;i<candidates.length;i++){const d=Math.abs(candidates[i].position.y-(this.paddleRight.position.y+this.paddleRight.height/2));if(d<bestDist){target=candidates[i];bestDist=d;}}
+    const centerY=this.paddleRight.position.y+this.paddleRight.height/2;
+    const diff=target.position.y-centerY;
+    if(Math.abs(diff)<=6)return;
+    this.paddleRight.move((diff>0?1:-1)*this.paddleRight.speed*0.9);
+  }
+  capBallSpeedFor(ball){
+    if(!ball||!ball.velocity)return;
+    const max=PongConfig.ball.maxSpeed,vx=ball.velocity.x||0,vy=ball.velocity.y||0;
+    const speed=Math.sqrt(vx*vx+vy*vy);
+    if(speed>max&&speed>0){const s=max/speed;ball.velocity.x=vx*s;ball.velocity.y=vy*s;}
+  }
+  _ballHitsRect(ball,rect){
+    const bx=ball.position.x,by=ball.position.y;
+    const left=rect.x-(rect.w/2),top=rect.y-(rect.h/2),right=rect.x+(rect.w/2),bottom=rect.y+(rect.h/2);
+    const cx=Math.max(left,Math.min(bx,right)),cy=Math.max(top,Math.min(by,bottom));
+    const dx=bx-cx,dy=by-cy;return(dx*dx+dy*dy)<=(ball.radius*ball.radius);
+  }
+  _applyPowerUp(type,side){
+    const now=performance.now(),dur=PongConfig.powerUp.durationSec*1000;
+    if(type===1){const p=side==='left'?this.paddleLeft:this.paddleRight;p.height=Math.min(PongConfig.canvas.height,PongConfig.paddle.height*1.6);this.activeEffects[side]={type:'big',until:now+dur};}
+    else if(type===2){const factor=1.6;for(const b of this.balls){b.velocity.x*=factor;b.velocity.y*=factor;}this.activeEffects[side]={type:'ball_fast',until:now+dur,factor};}
+    else if(type===3){const other=side==='left'?'right':'left';const p=other==='left'?this.paddleLeft:this.paddleRight;p.height=Math.min(PongConfig.canvas.height,PongConfig.paddle.height*1.6);this.activeEffects[other]={type:'big_opponent',until:now+dur};}
+  }
+  _ensureAudio(){if(this.audioCtx)return;const A=window.AudioContext||window.webkitAudioContext;if(!A)return;this.audioCtx=new A();}
+  playScoreSound(player){
+    this._ensureAudio();if(!this.audioCtx)return;
+    try{const ctx=this.audioCtx,o=ctx.createOscillator(),g=ctx.createGain();o.type='sine';o.frequency.value=player==='p1'?880:440;g.gain.value=0.0001;o.connect(g);g.connect(ctx.destination);const now=ctx.currentTime;g.gain.setValueAtTime(0.0001,now);g.gain.linearRampToValueAtTime(0.18,now+0.01);o.start(now);g.gain.linearRampToValueAtTime(0.0001,now+0.18);o.stop(now+0.2);}catch(e){}
+  }
+  update(){
+    if(this.gameOver)return;
+    for(const b of this.balls)b.update();
+    const now=performance.now();
+    if(!this.powerUp&&now>=this.nextPowerUpAt){
+      const margin=60;
+      this.powerUp={x:this.randRange(margin,PongConfig.canvas.width-margin),y:this.randRange(margin,PongConfig.canvas.height-margin),w:PongConfig.powerUp.width,h:PongConfig.powerUp.height,type:Math.floor(Math.random()*3)+1,spawnedAt:now};
+      this.nextPowerUpAt=now+this.randRange(PongConfig.powerUp.spawnMinSec*1000,PongConfig.powerUp.spawnMaxSec*1000);
+    }
+    if(this.powerUp){for(const b of this.balls){if(this._ballHitsRect(b,this.powerUp)){const hitter=b.lastHit||(b.velocity.x>0?'p1':'p2');this._applyPowerUp(this.powerUp.type,hitter==='p1'?'left':'right');this.powerUp=null;break;}}}
+    for(const side of['left','right']){const eff=this.activeEffects[side];if(eff&&eff.until&&now>=eff.until){if(eff.type==='big'){(side==='left'?this.paddleLeft:this.paddleRight).height=PongConfig.paddle.height;}else if(eff.type==='big_opponent'){(side==='left'?this.paddleRight:this.paddleLeft).height=PongConfig.paddle.height;}else if(eff.type==='ball_fast'){const f=eff.factor||1.6;for(const bb of this.balls){bb.velocity.x/=f;bb.velocity.y/=f;}}this.activeEffects[side]=null;}}
+    const bumperActive=(this.scores.p1+this.scores.p2)>=PongConfig.bumper.enabledAtScore;
+    if(bumperActive){const cx=PongConfig.canvas.width/2,cy=PongConfig.canvas.height/2,br=PongConfig.bumper.radius;for(const b of this.balls){const dx=b.position.x-cx,dy=b.position.y-cy,dist=Math.sqrt(dx*dx+dy*dy),minDist=br+b.radius;if(dist<=minDist){const inv=dist===0?1:1/dist,nx=dx*inv,ny=dy*inv,vdotn=b.velocity.x*nx+b.velocity.y*ny;b.velocity.x-=2*vdotn*nx;b.velocity.y-=2*vdotn*ny;const ov=(minDist-dist)+0.5;b.position.x+=nx*ov;b.position.y+=ny*ov;this.capBallSpeedFor(b);}}}
+    for(const b of this.balls){
+      const hitLeft=b.position.x-b.radius<this.paddleLeft.width&&b.position.y>this.paddleLeft.position.y&&b.position.y<this.paddleLeft.position.y+this.paddleLeft.height;
+      if(hitLeft){b.velocity.x*=-1;b.lastHit='p1';const delta=b.position.y-(this.paddleLeft.position.y+this.paddleLeft.height/2);b.velocity.y=delta*PongConfig.ball.spinFactor;b.velocity.x*=1.25;b.velocity.y*=1.25;this.capBallSpeedFor(b);}
+      const hitRight=b.position.x+b.radius>(PongConfig.canvas.width-this.paddleRight.width)&&b.position.y>this.paddleRight.position.y&&b.position.y<this.paddleRight.position.y+this.paddleRight.height;
+      if(hitRight){b.velocity.x*=-1;b.lastHit='p2';const delta=b.position.y-(this.paddleRight.position.y+this.paddleRight.height/2);b.velocity.y=delta*PongConfig.ball.spinFactor;b.velocity.x*=1.25;b.velocity.y*=1.25;this.capBallSpeedFor(b);}
+      if(b.position.x-b.radius<0){this.scores.p2++;this.playScoreSound('p2');this.checkWin()||b.reset();}
+      else if(b.position.x+b.radius>PongConfig.canvas.width){this.scores.p1++;this.playScoreSound('p1');this.checkWin()||b.reset();}
+    }
+    const p1m=this.scores.p1>0&&this.scores.p1%3===0,p2m=this.scores.p2>0&&this.scores.p2%3===0;
+    if(((p1m&&this.multiTriggered.p1!==this.scores.p1)||(p2m&&this.multiTriggered.p2!==this.scores.p2))&&this.balls.length===1){
+      if(p1m)this.multiTriggered.p1=this.scores.p1;if(p2m)this.multiTriggered.p2=this.scores.p2;
+      const b1=this.balls[0];b1.position.x=PongConfig.canvas.width/2;b1.position.y=PongConfig.canvas.height/2;b1.velocity.x=-Math.abs(PongConfig.ball.baseSpeedX);b1.velocity.y=(Math.random()*(2*PongConfig.ball.maxRandomY))-PongConfig.ball.maxRandomY;
+      const b2=new PBall(PongConfig.ball.radius,PongConfig.canvas.width,PongConfig.canvas.height);b2.position.x=PongConfig.canvas.width/2;b2.position.y=PongConfig.canvas.height/2;b2.velocity.x=Math.abs(PongConfig.ball.baseSpeedX);b2.velocity.y=-b1.velocity.y;this.balls.push(b2);
+    }
+    if(this.balls.length>1){const kp1=this.multiTriggered.p1===this.scores.p1,kp2=this.multiTriggered.p2===this.scores.p2;if(!kp1&&!kp2){const keep=this.balls[0];keep.position.x=PongConfig.canvas.width/2;keep.position.y=PongConfig.canvas.height/2;keep.velocity.x=Math.sign(keep.velocity.x||1)*PongConfig.ball.baseSpeedX;keep.velocity.y=0;this.balls=[keep];}}
+  }
+  checkWin(){
+    if(this.scores.p1>=PongConfig.rules.winningScore||this.scores.p2>=PongConfig.rules.winningScore){
+      this.gameOver=true;this.restartBtn.style.display="inline-block";
+      this.replayCountdown={until:performance.now()+5000};
+      setTimeout(()=>{if(this.gameOver)this.restart();},5000);return true;
+    }return false;
+  }
+  draw(){
+    this.renderer.clear(PongConfig.canvas.width,PongConfig.canvas.height);
+    this.ctx.save();this.ctx.strokeStyle=PongConfig.visuals.fg;this.ctx.lineWidth=2;this.ctx.setLineDash([10,6]);
+    this.ctx.beginPath();this.ctx.moveTo(PongConfig.canvas.width/2,0);this.ctx.lineTo(PongConfig.canvas.width/2,PongConfig.canvas.height);this.ctx.stroke();this.ctx.setLineDash([]);this.ctx.restore();
+    this.renderer.rect(this.paddleLeft.rect());this.renderer.rect(this.paddleRight.rect());
+    const bumperActive=(this.scores.p1+this.scores.p2)>=PongConfig.bumper.enabledAtScore;
+    if(bumperActive)this.renderer.circle({position:{x:PongConfig.canvas.width/2,y:PongConfig.canvas.height/2},radius:PongConfig.bumper.radius},PongConfig.bumper.color);
+    let maxSpeed=0;
+    for(const b of this.balls){this.renderer.circle(b);const vx=b.velocity.x||0,vy=b.velocity.y||0,sp=Math.sqrt(vx*vx+vy*vy);if(sp>maxSpeed)maxSpeed=sp;}
+    if(this.powerUp){const pu=this.powerUp;this.ctx.save();this.ctx.fillStyle=PongConfig.powerUp.colors.bg;this.ctx.strokeStyle=PongConfig.powerUp.colors.border;this.ctx.lineWidth=2;this.ctx.fillRect(pu.x-pu.w/2,pu.y-pu.h/2,pu.w,pu.h);this.ctx.strokeRect(pu.x-pu.w/2,pu.y-pu.h/2,pu.w,pu.h);this.ctx.restore();}
+    this.renderer.text(this.scores.p1,PongConfig.canvas.width/4,50);
+    this.renderer.text(this.scores.p2,3*PongConfig.canvas.width/4,50);
+    this.renderer.text("Speed: "+maxSpeed.toFixed(2),PongConfig.canvas.width-200,30);
+    if(this.gameOver){
+      this.renderer.text("Game Over",PongConfig.canvas.width/2-80,PongConfig.canvas.height/2-20,PongConfig.visuals.gameOver);
+      const msg=this.scores.p1>=PongConfig.rules.winningScore?"Player 1 Wins!":"Player 2 Wins!";
+      this.renderer.text(msg,PongConfig.canvas.width/2-120,PongConfig.canvas.height/2+20,PongConfig.visuals.win);
+      if(this.replayCountdown){const s=Math.ceil((this.replayCountdown.until-performance.now())/1000);this.renderer.text('Restarting in '+s+'...',PongConfig.canvas.width/2-140,PongConfig.canvas.height/2+70,PongConfig.visuals.text);}
+    }
+    if(this.paused){this.ctx.save();this.ctx.fillStyle='rgba(0,0,0,0.5)';this.ctx.fillRect(0,0,PongConfig.canvas.width,PongConfig.canvas.height);this.ctx.fillStyle='#fff';this.ctx.font='36px Arial';this.ctx.fillText('PAUSED',PongConfig.canvas.width/2-60,PongConfig.canvas.height/2);this.ctx.restore();}
+  }
+  restart(){
+    this.scores.p1=0;this.scores.p2=0;
+    this.paddleLeft.position.y=(PongConfig.canvas.height-this.paddleLeft.height)/2;
+    this.paddleRight.position.y=(PongConfig.canvas.height-this.paddleRight.height)/2;
+    this.balls=[new PBall(PongConfig.ball.radius,PongConfig.canvas.width,PongConfig.canvas.height)];
+    this.gameOver=false;this.restartBtn.style.display="none";
+    this.powerUp=null;this.activeEffects={left:null,right:null};this.replayCountdown=null;
+  }
+  loop(){
+    if(this.paused){this.draw();return;}
+    this.handleInput();this.update();this.draw();
+    requestAnimationFrame(this.loop);
+  }
+}
+
+const pongCanvas=document.getElementById('pongCanvas');
+const pongRestartBtn=document.getElementById('pongRestartBtn');
+const pongStartPvP=document.getElementById('pongStartPvP');
+const pongStartAI=document.getElementById('pongStartAI');
+pongCanvas.width=PongConfig.canvas.width;pongCanvas.height=PongConfig.canvas.height;
+let pongGame=null;
+
+function startPong(useAI){
+  if(pongGame){pongGame.ai=!!useAI;pongGame.restart();return;}
+  pongGame=new PongGame(pongCanvas,pongRestartBtn,{ai:!!useAI});
+  pongStartPvP.style.display='none';pongStartAI.style.display='none';
+  pongGame.loop();
+}
+pongStartPvP.addEventListener('click',function(e){e.preventDefault();startPong(false);pongCanvas.focus();});
+pongStartAI.addEventListener('click',function(e){e.preventDefault();startPong(true);pongCanvas.focus();});
+})();
+</script>
+
+<h3>Connect 4</h3>
+<p>Connect 4 is embedded live below — it demonstrates timer-driven state transitions (booleans), iteration over the board array to check winners, and <code>requestAnimationFrame</code> for the animated disc drop and confetti.</p>
+
+<div style="margin: 24px 0;">
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <div id="title-screen" class="flex flex-col items-center gap-6 p-6 bg-blue-100 rounded-xl shadow-xl border-8 border-double border-blue-800">
+    <div class="text-5xl font-extrabold text-blue-900 drop-shadow-lg">🔴 Connect 4 🟡</div>
+    <div class="flex gap-4">
+      <button onclick="c4game.startGame(60)"  class="px-6 py-3 bg-red-500    hover:bg-red-600    text-white rounded-lg shadow font-semibold">1 Minute</button>
+      <button onclick="c4game.startGame(180)" class="px-6 py-3 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg shadow font-semibold">3 Minutes</button>
+      <button onclick="c4game.startGame(300)" class="px-6 py-3 bg-green-500  hover:bg-green-600  text-white rounded-lg shadow font-semibold">5 Minutes</button>
+    </div>
+  </div>
+
+  <div id="game-screen" class="flex flex-col items-center gap-6 p-6 bg-blue-100 rounded-xl shadow-xl border-8 border-double border-blue-800 hidden">
+    <div class="text-5xl font-extrabold text-blue-900 drop-shadow-lg">🔴 Connect 4 🟡</div>
+    <div id="c4-status" class="text-xl font-semibold text-blue-900">Player Red's turn</div>
+    <div class="flex gap-8">
+      <div>Red Timer: <span id="red-timer">00:00</span></div>
+      <div>Yellow Timer: <span id="yellow-timer">00:00</span></div>
+    </div>
+    <div id="board" class="grid grid-cols-7 gap-2 bg-blue-600 p-4 rounded-xl shadow-inner"></div>
+    <button onclick="c4game.reset()" class="bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-lg shadow font-semibold">Restart Game</button>
+    <div id="winner-overlay" class="hidden fixed inset-0 bg-black/50 flex flex-col items-center justify-center z-50">
+      <div class="bg-white p-10 rounded-xl shadow-lg text-center">
+        <div id="winner-text" class="text-4xl font-bold mb-4">Player Red Wins!</div>
+        <button onclick="c4game.reset()" class="bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-lg shadow font-semibold">Play Again</button>
+      </div>
+      <canvas id="confetti-canvas" class="absolute inset-0 pointer-events-none"></canvas>
+    </div>
+  </div>
+</div>
+
+<script>
+class Connect4 {
+    constructor() {
+        this.rows = 6; this.cols = 7;
+        this.currentPlayer = "Red";
+        this.selectedTime = 180;
+        this.redTime = this.selectedTime;
+        this.yellowTime = this.selectedTime;
+        this.timerInterval = null;
+        this.board = [];
+        this.discSpeed = 10;
+        this.confettiParticles = [];
+        this.initBoard();
+        this.renderBoard();
+        this.setupCanvas();
+    }
+    initBoard() {
+        this.board = [];
+        for (let r = 0; r < this.rows; r++) {
+            this.board[r] = [];
+            for (let c = 0; c < this.cols; c++) this.board[r][c] = null;
+        }
+    }
+    renderBoard() {
+        const boardDiv = document.getElementById("board");
+        boardDiv.innerHTML = "";
+        for (let r = 0; r < this.rows; r++) {
+            for (let c = 0; c < this.cols; c++) {
+                const cell = document.createElement("div");
+                cell.classList.add("w-14","h-14","rounded-full","bg-blue-300","flex","items-center","justify-center","shadow-md","cursor-pointer");
+                cell.dataset.row = r; cell.dataset.col = c;
+                cell.addEventListener("click", () => this.placePiece(c));
+                if (this.board[r][c]) {
+                    const disc = document.createElement("div");
+                    disc.classList.add("w-12","h-12","rounded-full","shadow-inner");
+                    disc.style.backgroundColor = this.board[r][c];
+                    cell.appendChild(disc);
+                }
+                boardDiv.appendChild(cell);
+            }
+        }
+    }
+    placePiece(col) {
+        for (let r = this.rows - 1; r >= 0; r--) {
+            if (!this.board[r][col]) {
+                this.animateDiscDrop(r, col, this.currentPlayer);
+                this.board[r][col] = this.currentPlayer;
+                if (this.checkWinner(r, col)) { this.showWinner(this.currentPlayer); this.stopTimers(); }
+                else { this.switchPlayer(); }
+                break;
+            }
+        }
+    }
+    animateDiscDrop(row, col, color) {
+        const boardDiv = document.getElementById("board");
+        boardDiv.style.position = "relative";
+        const disc = document.createElement("div");
+        disc.classList.add("w-12","h-12","rounded-full","shadow-inner","absolute");
+        disc.style.backgroundColor = color;
+        const cell = boardDiv.children[row * this.cols + col];
+        const rect = cell.getBoundingClientRect();
+        const boardRect = boardDiv.getBoundingClientRect();
+        const discSize = 48;
+        const cellCenterX = rect.left - boardRect.left + rect.width / 2;
+        const cellCenterY = rect.top - boardRect.top + rect.height / 2;
+        disc.style.left = (cellCenterX - discSize/2) + "px";
+        disc.style.top = "-50px";
+        boardDiv.appendChild(disc);
+        const targetTop = cellCenterY - discSize/2;
+        const animate = () => {
+            let currentTop = parseFloat(disc.style.top);
+            if (currentTop < targetTop) { disc.style.top = Math.min(currentTop + this.discSpeed, targetTop) + "px"; requestAnimationFrame(animate); }
+            else { disc.remove(); this.renderBoard(); }
+        };
+        animate();
+    }
+    switchPlayer() {
+        this.currentPlayer = this.currentPlayer === "Red" ? "Yellow" : "Red";
+        document.getElementById("c4-status").innerText = `${this.currentPlayer}'s turn`;
+    }
+    checkWinner(row, col) {
+        const color = this.board[row][col];
+        return (
+            this.checkDirection(row,col,0,1,color) + this.checkDirection(row,col,0,-1,color) > 2 ||
+            this.checkDirection(row,col,1,0,color) > 2 ||
+            this.checkDirection(row,col,1,1,color) + this.checkDirection(row,col,-1,-1,color) > 2 ||
+            this.checkDirection(row,col,1,-1,color) + this.checkDirection(row,col,-1,1,color) > 2
+        );
+    }
+    checkDirection(r, c, dr, dc, color) {
+        let count = 0, i = r+dr, j = c+dc;
+        while (i>=0 && i<this.rows && j>=0 && j<this.cols && this.board[i][j]===color) { count++; i+=dr; j+=dc; }
+        return count;
+    }
+    showWinner(color) {
+        document.getElementById("winner-text").innerText = `Player ${color} Wins!`;
+        document.getElementById("winner-overlay").classList.remove("hidden");
+        this.launchConfetti();
+    }
+    startTimers() {
+        this.stopTimers();
+        this.updateTimerDisplay();
+        this.timerInterval = setInterval(() => {
+            if (this.currentPlayer === "Red") { this.redTime--; if (this.redTime<=0) { this.showWinner("Yellow"); this.stopTimers(); } }
+            else { this.yellowTime--; if (this.yellowTime<=0) { this.showWinner("Red"); this.stopTimers(); } }
+            this.updateTimerDisplay();
+        }, 1000);
+    }
+    stopTimers() { clearInterval(this.timerInterval); }
+    updateTimerDisplay() {
+        document.getElementById("red-timer").innerText    = this.formatTime(this.redTime);
+        document.getElementById("yellow-timer").innerText = this.formatTime(this.yellowTime);
+    }
+    formatTime(sec) {
+        const m = Math.floor(sec/60).toString().padStart(2,"0");
+        const s = (sec%60).toString().padStart(2,"0");
+        return `${m}:${s}`;
+    }
+    startGame(seconds) {
+        this.selectedTime = seconds; this.redTime = seconds; this.yellowTime = seconds;
+        document.getElementById("title-screen").classList.add("hidden");
+        document.getElementById("game-screen").classList.remove("hidden");
+        this.startTimers();
+    }
+    reset() {
+        this.stopTimers(); this.initBoard(); this.renderBoard();
+        this.currentPlayer = "Red";
+        this.redTime = this.selectedTime; this.yellowTime = this.selectedTime;
+        this.updateTimerDisplay();
+        document.getElementById("winner-overlay").classList.add("hidden");
+        document.getElementById("game-screen").classList.add("hidden");
+        document.getElementById("title-screen").classList.remove("hidden");
+    }
+    setupCanvas() {
+        this.canvas = document.getElementById("confetti-canvas");
+        this.ctx = this.canvas.getContext("2d");
+        this.canvas.width = window.innerWidth; this.canvas.height = window.innerHeight;
+    }
+    launchConfetti() {
+        this.confettiParticles = [];
+        for (let i = 0; i < 100; i++) {
+            this.confettiParticles.push({ x: Math.random()*this.canvas.width, y: Math.random()*this.canvas.height, r: Math.random()*6+4, color: i%2===0?"red":"yellow", dx: Math.random()*4-2, dy: Math.random()*4+2 });
+        }
+        requestAnimationFrame(() => this.updateConfetti());
+    }
+    updateConfetti() {
+        this.ctx.clearRect(0,0,this.canvas.width,this.canvas.height);
+        for (let p of this.confettiParticles) {
+            p.x+=p.dx; p.y+=p.dy;
+            if (p.y>this.canvas.height) p.y=0;
+            if (p.x>this.canvas.width) p.x=0;
+            if (p.x<0) p.x=this.canvas.width;
+            this.ctx.fillStyle=p.color; this.ctx.beginPath(); this.ctx.arc(p.x,p.y,p.r,0,Math.PI*2); this.ctx.fill();
+        }
+        requestAnimationFrame(() => this.updateConfetti());
+    }
+}
+const c4game = new Connect4();
+</script>
 
 <hr>
 
