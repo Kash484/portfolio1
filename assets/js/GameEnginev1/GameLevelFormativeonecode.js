@@ -1,15 +1,3 @@
-// Adventure Game Custom Level
-// Exported from GameBuilder on 2026-03-11T21:58:42.723Z
-// How to use this file:
-// 1) Save as assets/js/adventureGame/GameLevelKashslime.js in your repo.
-// 2) Reference it in your runner or level selector. Examples:
-//    import GameLevelPlanets from '/assets/js/GameEnginev1/GameLevelPlanets.js';
-//    import GameLevelKashslime from '/assets/js/adventureGame/GameLevelKashslime.js';
-//    export const gameLevelClasses = [GameLevelPlanets, GameLevelKashslime];
-//    // or pass it directly to your GameControl as the only level.
-// 3) Ensure images exist and paths resolve via 'path' provided by the engine.
-// 4) You can add more objects to this.classes inside the constructor.
-
 import GameEnvBackground from './essentials/GameEnvBackground.js';
 import Player from './essentials/Player.js';
 import Npc from './essentials/Npc.js';

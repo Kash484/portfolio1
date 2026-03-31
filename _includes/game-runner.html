@@ -48,7 +48,7 @@
   
   // Load code from localStorage or use default
   const savedCode = localStorage.getItem(storageKey);
-  const initialCode = savedCode !== null ? savedCode : defaultCode;
+  const initialCode = (savedCode && savedCode.trim().length > 0) ? savedCode : defaultCode;
   
   // Set CodeMirror height dynamically
   const style = document.createElement('style');
@@ -261,11 +261,25 @@
         const userModule = await import(blobUrl);
         
         // Get exports from user code
-        const GameControl = userModule.GameControl;
-        const gameLevelClasses = userModule.gameLevelClasses;
-        
+        let GameControl = userModule.GameControl;
+        let gameLevelClasses = userModule.gameLevelClasses;
+
+        // Fallback: if code is a single default exported level class (legacy style)
         if (!gameLevelClasses) {
-          throw new Error('Code must export gameLevelClasses');
+          const defaultClass = userModule.default;
+          if (defaultClass && (typeof defaultClass === 'function' || typeof defaultClass === 'object')) {
+            gameLevelClasses = [defaultClass];
+          }
+        }
+
+        // Fallback: if GameControl isn’t exported, load core control directly from GameEngine module (safe fallback)
+        if (!GameControl) {
+          const GameControlMod = await import(baseUrl + '/assets/js/GameEnginev1/essentials/GameControl.js');
+          GameControl = GameControlMod.default || GameControlMod.GameControl;
+        }
+
+        if (!gameLevelClasses || !Array.isArray(gameLevelClasses) || gameLevelClasses.length === 0) {
+          throw new Error('Code must export gameLevelClasses or default level class');
         }
 
         // Get container dimensions for environment
