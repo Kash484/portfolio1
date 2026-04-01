@@ -3,95 +3,122 @@ layout: post
 codemirror: true
 title: Game Runner Examples
 description: Learn game development using the GameEngine framework in a contained educational environment. Build game levels, add characters, and create interactive experiences with live code editing and debugging controls.
-permalink: /rpg/formsum
+permalink: /rpg/game
 
 ---
 
-## Level 1: Kashslime — Alien Planet with Slime Player
+## Define Game Runner in a Lesson
+
+Game Runner integrates your GameEngine framework for teaching game development. Define **challenge** and **code** variables, then pass them to the include with a unique **runner_id**.
+
+### Game Runner Architecture
+
+#### HTML Component
+
+- File: `_includes/game-runner.html`
+- Reusable component for GameEngine integration
+- Automatically creates gameContainer and gameCanvas
+- Provides game controls: Start, Pause/Resume, Stop, Reset
+- Level selector dropdown for switching between game levels
+
+#### SCSS Styling
+
+- Main file: `_sass/open-coding/forms/game-runner.scss`
+- Uses runner-base mixin for consistency
+- Game output constrained to 400-600px height for education
+- Canvas automatically sized and centered
+- Color-coded buttons: Green (Start), Yellow (Pause), Red (Stop)
+
+#### Game Output Area
+
+The game renders in a constrained canvas for educational purposes:
+
+- Min height: 400px
+- Max height: 600px
+- Canvas max height: 580px
+- Black background with accent-colored border
+- Automatically centers the canvas
+- Scrollable if content exceeds container
+
+#### Controls
+
+- **▶ Start**: Runs the game code and starts the game engine
+- **⏸ Pause / ▶ Resume**: Pauses and resumes game execution
+- **■ Stop**: Stops the game and clears the canvas
+- **↻ Reset**: Resets code to original and stops the game
+- **Level Selector**: Dropdown to switch between game levels
+- **📋 Copy**: Copy code to clipboard
+- **🗑️ Clear**: Clear the editor
+
+#### Code Structure
+
+Your game code must export two things:
+
+1. **GameControl**: Your GameControl class (usually imported)
+2. **gameLevelClasses**: Array of game level classes
+
+```javascript
+import GameControl from '/assets/js/GameEnginev1/essentials/GameControl.js';
+import GameLevelBasic from '/assets/js/GameEnginev1/GameLevelBasic.js';
+
+export const GameControl = GameControl;
+export const gameLevelClasses = [GameLevelBasic];
+```
+
+---
+
+## Basic Game: Background, Custom Player
 
 {% capture challenge1 %}
-Move the slime around the alien planet using WASD. Walk up to Chill Guy to trigger an interaction!
+Run the basic game. Use WASD or arrow keys to move Chill Guy around the desert. Walk up to R2D2 to trigger an interaction!
 {% endcapture %}
 
 {% capture code1 %}
+// Import for GameRunner
 import GameControl from '/assets/js/GameEnginev1/essentials/GameControl.js';
+// Level Code
 import GameEnvBackground from '/assets/js/GameEnginev1/essentials/GameEnvBackground.js';
 import Player from '/assets/js/GameEnginev1/essentials/Player.js';
-import Npc from '/assets/js/GameEnginev1/essentials/Npc.js';
-import Barrier from '/assets/js/GameEnginev1/essentials/Barrier.js';
 
-class GameLevelKashslime {
-    constructor(gameEnv) {
-        const path = gameEnv.path;
-        const width = gameEnv.innerWidth;
-        const height = gameEnv.innerHeight;
+class CustomLevel {
+  constructor(gameEnv) {
+    const path = gameEnv.path;
+    const width = gameEnv.innerWidth;
+    const height = gameEnv.innerHeight;
+    const bgData = {
+        name: 'custom_bg',
+        src: path + "/images/gamebuilder/bg/clouds.jpg",
+        pixels: { height: 720, width: 1280 }
+    };
+    const playerData = {
+      id: 'Hero',
+      src: path + "/images/gamify/chillguy.png",
+      SCALE_FACTOR: 5,
+      STEP_FACTOR: 1000,
+      ANIMATION_RATE: 50,
+      INIT_POSITION: { x: 100, y: 300 },
+      pixels: { height: 512, width: 384 },
+      orientation: { rows: 4, columns: 3 },
+      down: { row: 0, start: 0, columns: 3 },
+      downRight: { row: 1, start: 0, columns: 3, rotate: Math.PI/16 },
+      downLeft: { row: 2, start: 0, columns: 3, rotate: -Math.PI/16 },
+      right: { row: 1, start: 0, columns: 3 },
+      left: { row: 2, start: 0, columns: 3 },
+      up: { row: 3, start: 0, columns: 3 },
+      upRight: { row: 1, start: 0, columns: 3, rotate: -Math.PI/16 },
+      upLeft: { row: 2, start: 0, columns: 3, rotate: Math.PI/16 },
+      hitbox: { widthPercentage: 0.45, heightPercentage: 0.2 },
+      keypress: { up: 87, left: 65, down: 83, right: 68 }
+    };
 
-        const bgData = {
-            name: "custom_bg",
-            src: path + "/images/gamebuilder/bg/alien_planet.jpg",
-            pixels: { height: 772, width: 1134 }
-        };
-
-        const playerData = {
-            id: 'playerData',
-            src: path + "/images/gamebuilder/sprites/slime.png",
-            SCALE_FACTOR: 5,
-            STEP_FACTOR: 1000,
-            ANIMATION_RATE: 50,
-            INIT_POSITION: { x: 50, y: 556 },
-            pixels: { height: 225, width: 225 },
-            orientation: { rows: 4, columns: 4 },
-            down: { row: 2, start: 0, columns: 3 },
-            downRight: { row: 1, start: 0, columns: 3, rotate: Math.PI/16 },
-            downLeft: { row: 0, start: 0, columns: 3, rotate: -Math.PI/16 },
-            left: { row: 0, start: 0, columns: 3 },
-            right: { row: 1, start: 0, columns: 3 },
-            up: { row: 3, start: 0, columns: 3 },
-            upLeft: { row: 2, start: 0, columns: 3, rotate: Math.PI/16 },
-            upRight: { row: 3, start: 0, columns: 3, rotate: -Math.PI/16 },
-            hitbox: { widthPercentage: 0, heightPercentage: 0 },
-            keypress: { up: 87, left: 65, down: 83, right: 68 }
-        };
-
-        const npcData1 = {
-            id: 'chilly',
-            greeting: 'Yo wasup bro',
-            src: path + "/images/gamify/chillguy.png",
-            SCALE_FACTOR: 4,
-            ANIMATION_RATE: 50,
-            INIT_POSITION: { x: 293, y: 210 },
-            pixels: { height: 512, width: 384 },
-            orientation: { rows: 4, columns: 3 },
-            down: { row: 0, start: 0, columns: 3 },
-            right: { row: Math.min(1, 4 - 1), start: 0, columns: 3 },
-            left: { row: Math.min(2, 4 - 1), start: 0, columns: 3 },
-            up: { row: Math.min(3, 4 - 1), start: 0, columns: 3 },
-            upRight: { row: Math.min(3, 4 - 1), start: 0, columns: 3 },
-            downRight: { row: Math.min(1, 4 - 1), start: 0, columns: 3 },
-            upLeft: { row: Math.min(2, 4 - 1), start: 0, columns: 3 },
-            downLeft: { row: 0, start: 0, columns: 3 },
-            hitbox: { widthPercentage: 0.1, heightPercentage: 0.2 },
-            dialogues: ['Yo wasup bro'],
-            reaction: function() { if (this.dialogueSystem) { this.showReactionDialogue(); } else { console.log(this.greeting); } },
-            interact: function() { if (this.dialogueSystem) { this.showRandomDialogue(); } }
-        };
-
-        const dbarrier_1 = {
-            id: 'dbarrier_1', x: 119, y: 58, width: 344, height: 23, visible: false,
-            hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
-            fromOverlay: true
-        };
-
-        this.classes = [
-            { class: GameEnvBackground, data: bgData },
-            { class: Player, data: playerData },
-            { class: Npc, data: npcData1 },
-            { class: Barrier, data: dbarrier_1 }
-        ];
-    }
+    this.classes = [
+      { class: GameEnvBackground, data: bgData },
+      { class: Player, data: playerData },
+    ];
+  }
 }
-
-export const gameLevelClasses = [GameLevelKashslime];
+export const gameLevelClasses = [CustomLevel];
+// Export for game runner
 export { GameControl };
 {% endcapture %}
 
@@ -99,122 +126,20 @@ export { GameControl };
    runner_id="game1"
    challenge=challenge1
    code=code1
+   height="150px"
 %}
 
----
-
-## Level 2: Kashcustom — Nonchalance Counter
+## Combine Game Levels: Connected levels via ESC key
 
 {% capture challenge2 %}
-Move the slime through the clouds and interact with Chill Guy. Each interaction increases your Nonchalance score by 10!
+Run the basic game. Use WASD or arrow keys to move Chill Guy around the desert. Walk up to R2D2 to trigger an interaction!
 {% endcapture %}
 
 {% capture code2 %}
-import GameControl from '/assets/js/GameEnginev1/essentials/GameControl.js';
-import GameEnvBackground from '/assets/js/GameEnginev1/essentials/GameEnvBackground.js';
-import Player from '/assets/js/GameEnginev1/essentials/Player.js';
-import Npc from '/assets/js/GameEnginev1/essentials/Npc.js';
-import Barrier from '/assets/js/GameEnginev1/essentials/Barrier.js';
-
-class GameLevelKashcustom {
-    constructor(gameEnv) {
-        const path = gameEnv.path;
-
-        // --- UI Setup ---
-        this.nonchalance = 0;
-        this.uiElement = document.createElement('div');
-        this.uiElement.id = 'nonchalance-ui';
-        Object.assign(this.uiElement.style, {
-            position: 'fixed',
-            bottom: '20px',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            padding: '10px 20px',
-            background: 'rgba(0, 0, 0, 0.7)',
-            color: 'white',
-            fontFamily: 'Arial, sans-serif',
-            borderRadius: '10px',
-            fontSize: '24px',
-            zIndex: '1000',
-            border: '2px solid #666'
-        });
-        this.uiElement.innerHTML = `Nonchalance: <span id="nonchalance-value">0</span>`;
-        document.body.appendChild(this.uiElement);
-
-        const updateNonchalance = () => {
-            this.nonchalance += 10;
-            const valueSpan = document.getElementById('nonchalance-value');
-            if (valueSpan) valueSpan.innerText = this.nonchalance;
-        };
-
-        const bgData = {
-            name: "custom_bg",
-            src: path + "/images/gamebuilder/bg/clouds.jpg",
-            pixels: { height: 720, width: 1280 }
-        };
-
-        const playerData = {
-            id: 'playerData',
-            src: path + "/images/gamebuilder/sprites/slime.png",
-            SCALE_FACTOR: 5,
-            STEP_FACTOR: 1000,
-            ANIMATION_RATE: 50,
-            INIT_POSITION: { x: 100, y: 300 },
-            pixels: { height: 225, width: 225 },
-            orientation: { rows: 4, columns: 4 },
-            down: { row: 2, start: 0, columns: 3 },
-            downRight: { row: 1, start: 0, columns: 3, rotate: Math.PI/16 },
-            downLeft: { row: 0, start: 0, columns: 3, rotate: -Math.PI/16 },
-            left: { row: 0, start: 0, columns: 3 },
-            right: { row: 1, start: 0, columns: 3 },
-            up: { row: 3, start: 0, columns: 3 },
-            upLeft: { row: 2, start: 0, columns: 3, rotate: Math.PI/16 },
-            upRight: { row: 3, start: 0, columns: 3, rotate: -Math.PI/16 },
-            hitbox: { widthPercentage: 0, heightPercentage: 0 },
-            keypress: { up: 87, left: 65, down: 83, right: 68 }
-        };
-
-        const npcData1 = {
-            id: 'chillguy2',
-            greeting: 'Nonchalantness updated',
-            src: path + "/images/gamify/chillguy.png",
-            SCALE_FACTOR: 1,
-            ANIMATION_RATE: 50,
-            INIT_POSITION: { x: 276, y: 140 },
-            pixels: { height: 512, width: 384 },
-            orientation: { rows: 4, columns: 3 },
-            down: { row: 0, start: 0, columns: 3 },
-            right: { row: Math.min(1, 4 - 1), start: 0, columns: 3 },
-            left: { row: Math.min(2, 4 - 1), start: 0, columns: 3 },
-            up: { row: Math.min(3, 4 - 1), start: 0, columns: 3 },
-            upRight: { row: Math.min(3, 4 - 1), start: 0, columns: 3 },
-            downRight: { row: Math.min(1, 4 - 1), start: 0, columns: 3 },
-            upLeft: { row: Math.min(2, 4 - 1), start: 0, columns: 3 },
-            downLeft: { row: 0, start: 0, columns: 3 },
-            hitbox: { widthPercentage: 0.1, heightPercentage: 0.2 },
-            dialogues: ['Nonchalantness updated'],
-            interact: function() {
-                updateNonchalance();
-                if (this.dialogueSystem) { this.showRandomDialogue(); }
-            }
-        };
-
-        const dbarrier_1 = {
-            id: 'dbarrier_1', x: 91, y: 44, width: 245, height: 35, visible: false,
-            hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
-            fromOverlay: true
-        };
-
-        this.classes = [
-            { class: GameEnvBackground, data: bgData },
-            { class: Player, data: playerData },
-            { class: Npc, data: npcData1 },
-            { class: Barrier, data: dbarrier_1 }
-        ];
-    }
-}
-
-export const gameLevelClasses = [GameLevelKashcustom];
+import GameControl from "/assets/js/GameEnginev1/essentials/GameControl.js";
+import GameLevelWater from "/assets/js/GameEnginev1/GameLevelWater.js";
+import GameLevelParallaxFish from "/assets/js/GameEnginev1/GameLevelParallaxFish.js";
+export const gameLevelClasses = [GameLevelWater, GameLevelParallaxFish];
 export { GameControl };
 {% endcapture %}
 
@@ -224,98 +149,112 @@ export { GameControl };
    code=code2
 %}
 
+## Best Practices
+
+### Import Structure
+
+Always import necessary GameEngine modules:
+
+```javascript
+import GameControl from '/assets/js/GameEnginev1/essentials/GameControl.js';
+import GameLevelBasic from '/assets/js/GameEnginev1/GameLevelBasic.js';
+```
+
+### Export Requirements
+
+Your code must export:
+
+```javascript
+export { GameControl };
+export const gameLevelClasses = [GameLevelBasic, GameLevelWater];
+```
+
+### Level Class Structure
+
+Each level class needs a constructor that defines:
+
+- Background data
+- Player/character data
+- NPC data
+- Collectible items
+- The `this.classes` array with all game objects
+
+### Game Controls
+
+- **WASD or Arrow Keys**: Move the player
+- **Space**: Jump (if implemented in level)
+- **E or Enter**: Interact with NPCs
+- **Esc**: Pause menu (if implemented)
+
+### Debugging
+
+Use the game controls to debug:
+
+- **Pause**: Stop to examine game state
+- **Stop**: Clear and restart fresh
+- **Reset**: Restore original code
+- **Console**: Check browser console (F12) for errors
+
 ---
 
-## Level 3: Gameleveltwo — Kirby meets Donkey Kong
+## Teaching Tips
 
-{% capture challenge3 %}
-Play as Kirby on the alien planet! Use WASD to move and walk up to Donkey Kong to hear what he has to say.
-{% endcapture %}
+### Progressive Learning Path
 
-{% capture code3 %}
-import GameControl from '/assets/js/GameEnginev1/essentials/GameControl.js';
-import GameEnvBackground from '/assets/js/GameEnginev1/essentials/GameEnvBackground.js';
-import Player from '/assets/js/GameEnginev1/essentials/Player.js';
-import Npc from '/assets/js/GameEnginev1/essentials/Npc.js';
-import Barrier from '/assets/js/GameEnginev1/essentials/Barrier.js';
+1. **Run Existing Levels**: Start with GameLevelBasic
+2. **Multi-Level Games**: Add multiple levels with selector
+3. **Modify Levels**: Change player position, speed, sprites
+4. **Custom Levels**: Create entirely new levels
+5. **Add Interactions**: Add NPCs with dialogue
+6. **Game Mechanics**: Implement collectibles, enemies, physics
 
-class GameLevelGameleveltwo {
-    constructor(gameEnv) {
-        const path = gameEnv.path;
-        const width = gameEnv.innerWidth;
-        const height = gameEnv.innerHeight;
+### Common Modifications
 
-        const bgData = {
-            name: "custom_bg",
-            src: path + "/images/gamebuilder/bg/alien_planet.jpg",
-            pixels: { height: 772, width: 1134 }
-        };
+**Change Player Start Position:**
 
-        const playerData = {
-            id: 'playerData',
-            src: path + "/images/gamebuilder/sprites/kirby.png",
-            SCALE_FACTOR: 3,
-            STEP_FACTOR: 1000,
-            ANIMATION_RATE: 50,
-            INIT_POSITION: { x: 0, y: 300 },
-            pixels: { height: 36, width: 569 },
-            orientation: { rows: 1, columns: 13 },
-            down: { row: 0, start: 0, columns: 3 },
-            downRight: { row: 0, start: 0, columns: 3, rotate: Math.PI/16 },
-            downLeft: { row: 0, start: 0, columns: 3, rotate: -Math.PI/16 },
-            left: { row: 0, start: 0, columns: 3 },
-            right: { row: 0, start: 0, columns: 3 },
-            up: { row: 0, start: 0, columns: 3 },
-            upLeft: { row: 0, start: 0, columns: 3, rotate: Math.PI/16 },
-            upRight: { row: 0, start: 0, columns: 3, rotate: -Math.PI/16 },
-            hitbox: { widthPercentage: 0, heightPercentage: 0 },
-            keypress: { up: 87, left: 65, down: 83, right: 68 }
-        };
+```javascript
+INIT_POSITION: { x: 200, y: 300 }
+```
 
-        const npcData1 = {
-            id: 'donkey',
-            greeting: 'Was up bro you got a lil something in your hair',
-            src: path + "/images/gamebuilder/sprites/donkey.png",
-            SCALE_FACTOR: 2,
-            ANIMATION_RATE: 50,
-            INIT_POSITION: { x: 338, y: 300 },
-            pixels: { height: 770, width: 513 },
-            orientation: { rows: 1, columns: 3 },
-            down: { row: 0, start: 0, columns: 3 },
-            right: { row: Math.min(1, 1 - 1), start: 0, columns: 3 },
-            left: { row: Math.min(2, 1 - 1), start: 0, columns: 3 },
-            up: { row: Math.min(3, 1 - 1), start: 0, columns: 3 },
-            upRight: { row: Math.min(3, 1 - 1), start: 0, columns: 3 },
-            downRight: { row: Math.min(1, 1 - 1), start: 0, columns: 3 },
-            upLeft: { row: Math.min(2, 1 - 1), start: 0, columns: 3 },
-            downLeft: { row: 0, start: 0, columns: 3 },
-            hitbox: { widthPercentage: 0.1, heightPercentage: 0.2 },
-            dialogues: ['Was up bro you got a lil something in your hair'],
-            reaction: function() { if (this.dialogueSystem) { this.showReactionDialogue(); } else { console.log(this.greeting); } },
-            interact: function() { if (this.dialogueSystem) { this.showRandomDialogue(); } }
-        };
+**Adjust Player Speed:**
 
-        const dbarrier_1 = {
-            id: 'dbarrier_1', x: 195, y: 229, width: 56, height: 203, visible: false,
-            hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
-            fromOverlay: true
-        };
+```javascript
+STEP_FACTOR: 500  // Faster movement
+```
 
-        this.classes = [
-            { class: GameEnvBackground, data: bgData },
-            { class: Player, data: playerData },
-            { class: Npc, data: npcData1 },
-            { class: Barrier, data: dbarrier_1 }
-        ];
-    }
-}
+**Different Background:**
 
-export const gameLevelClasses = [GameLevelGameleveltwo];
-export { GameControl };
-{% endcapture %}
+```javascript
+src: path + "/images/gamify/water.png"
+```
 
-{% include game-runner.html
-   runner_id="game3"
-   challenge=challenge3
-   code=code3
-%}
+### Game Development Concepts
+
+The GameEngine teaches:
+
+- **Object-Oriented Programming**: Classes, inheritance, composition
+- **Game Loop**: Update and render cycles
+- **Sprite Animation**: Frame-based animation
+- **Collision Detection**: Hitboxes and interaction
+- **Event Handling**: Keyboard input, user interactions
+- **State Management**: Game state, level transitions
+
+### Troubleshooting
+
+**Game won't start:**
+
+- Check console for import errors
+- Verify all import paths start with `/assets/`
+- Ensure exports are correct
+
+**Player not moving:**
+
+- Check keypress configuration
+- Verify STEP_FACTOR is set
+- Check hitbox doesn't block movement
+
+**Canvas is blank:**
+
+- Verify background image path
+- Check canvas dimensions
+- Look for JavaScript errors in console
