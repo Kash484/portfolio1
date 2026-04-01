@@ -62,11 +62,11 @@
 </div>
 
 <script type="module">
-(function() {
+// eslint-disable
   const container = document.getElementById('game-runner-{{ include.runner_id }}');
   if (!container) return;
   
-  const hideEdit = {{ include.hide_edit | default: 'false' }};
+  const hideEdit = JSON.parse('{% if include.hide_edit %}true{% else %}false{% endif %}');
   const defaultCode = `{{ include.code }}`.trim();
   const editorHeight = "{{ include.height }}";
   const levelClasses = `{{ include.levels }}`.trim().split(',').map(s => s.trim()).filter(Boolean);
@@ -406,5 +406,4 @@
     });
   }
 
-})();
 </script>
