@@ -19,7 +19,7 @@ description: "Class of 2029"
 owner_name: Kashyap Tubati
 github_username: Kash484 
 github_repo: "portfolio1" 
-baseurl: "/portfolio1" 
+baseurl: "" 
 future: true
 
 # Build settings
