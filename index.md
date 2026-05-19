@@ -2,7 +2,7 @@
 layout: post 
 title: Portfolio Home 
 layout: post
-title: Portfolio Home
+permalink: /portfolio/blog
 hide: true
 show_reading_time: false
 ---
