@@ -7,7 +7,6 @@ hide: true
 show_reading_time: false
 ---
 
-
 > Hey, I'm Kashyap (Kash) Tubati. I work toward becoming a thoughtful software engineer by shipping games, utilities, and small experiments in code.
 
 ### Development Environment
@@ -82,7 +81,7 @@ show_reading_time: false
        🚀 CS Pathway
     </a>
 
-    <a href="https://gates.opencodingsociety.com/gamify/gategame"
+    <a href="https://gates.opencodingsociety.com/gamify/gategamev2"
        style="text-decoration: none; background: linear-gradient(135deg, #134E4A, #F43F5E); color: white; padding: 14px 22px; border-radius: 12px; border: 2px solid #FB7185; font-weight: 700; box-shadow: 0 0 18px rgba(251,113,133,0.6); transition: all 0.25s ease;">
        🚪 Gate Game
     </a>
@@ -93,13 +92,13 @@ show_reading_time: false
 
 ### My Projects
 
-> A handful of small apps I built — feel free to try them.
+> Real work from my repo — Gate Game sublevels I built, plus the source code itself.
 
 <div style="display: flex; flex-wrap: wrap; gap: 10px;">
-    <a href="{{site.baseurl}}/exam-predictor" class="btn" style="background-color: #06B6D4; color: black;">Exam Predictor</a>
-    <a href="{{site.baseurl}}/grade-predictor" class="btn" style="background-color: #10B981; color: black;">Grade Predictor</a>
-    <a href="{{site.baseurl}}/study-tracker" class="btn" style="background-color: #F59E0B; color: black;">Study Tracker</a>
-    <a href="{{site.baseurl}}/score-predictor" class="btn" style="background-color: #F43F5E; color: white;">Score Predictor</a>
+    <a href="https://gates.opencodingsociety.com/gamify/cannonball" class="btn" style="background-color: #06B6D4; color: black;">🎯 Cannon Ball</a>
+    <a href="https://gates.opencodingsociety.com/gamify/escaperoom" class="btn" style="background-color: #10B981; color: black;">🔒 Escape Room</a>
+    <a href="https://gates.opencodingsociety.com/gamify/zonecatch" class="btn" style="background-color: #F59E0B; color: black;">🎮 Zone Catch</a>
+    <a href="https://github.com/Kash484/portfolio1" class="btn" style="background-color: #F43F5E; color: white;">💻 Source (GitHub)</a>
 </div>
 
 <br>
@@ -161,87 +160,110 @@ requestAnimationFrame(() => {
 
 <style>
   .lo-section { margin: 20px 0 40px; }
-  .lo-category { margin: 28px 0; }
-  .lo-category h4 {
-    margin: 0 0 4px;
-    font-size: 1.15rem;
-    color: white;
-    border-bottom: 2px solid var(--lo-accent, #06B6D4);
-    padding-bottom: 6px;
-    display: inline-block;
+  .lo-dropdown {
+    margin: 10px 0;
+    border-left: 4px solid var(--lo-accent, #06B6D4);
+    background: linear-gradient(90deg, rgba(255,255,255,0.025), rgba(255,255,255,0.01));
+    border-radius: 0 8px 8px 0;
+    overflow: hidden;
+    transition: all 0.2s ease;
+  }
+  .lo-dropdown[open] {
+    background: linear-gradient(90deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+    box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+  }
+  .lo-dropdown > summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    user-select: none;
+    transition: background 0.15s ease;
+  }
+  .lo-dropdown > summary::-webkit-details-marker { display: none; }
+  .lo-dropdown > summary:hover { background: rgba(255,255,255,0.03); }
+  .lo-dropdown > summary::after {
+    content: "▾";
+    margin-left: auto;
+    color: var(--lo-accent, #06B6D4);
+    font-size: 0.9rem;
+    transition: transform 0.25s ease;
+  }
+  .lo-dropdown[open] > summary::after { transform: rotate(180deg); }
+  .lo-summary-icon { font-size: 1.25rem; line-height: 1; }
+  .lo-summary-title {
+    font-weight: 700;
+    font-size: 1.02rem;
+    color: var(--lo-accent, #06B6D4);
+    letter-spacing: 0.01em;
+  }
+  .lo-summary-count {
+    font-family: ui-monospace, Menlo, monospace;
+    font-size: 0.7rem;
+    color: #94a3b8;
+    background: rgba(255,255,255,0.05);
+    padding: 3px 9px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  .lo-dropdown-body {
+    padding: 4px 18px 18px;
+    border-top: 1px dashed rgba(255,255,255,0.08);
   }
   .lo-cat-desc {
     color: #9ca3af;
-    font-size: 0.92rem;
-    margin: 6px 0 14px;
-    line-height: 1.5;
-  }
-  .lo-rows {
-    display: flex;
-    flex-direction: column;
-    counter-reset: lo-counter;
-  }
-  .lo-row {
-    display: grid;
-    grid-template-columns: 44px 1fr;
-    gap: 14px;
-    padding: 14px 0;
-    align-items: start;
-    position: relative;
-  }
-  .lo-row + .lo-row {
-    border-top: 1px dashed rgba(255,255,255,0.07);
-  }
-  .lo-row::before {
-    counter-increment: lo-counter;
-    content: counter(lo-counter, decimal-leading-zero);
-    grid-column: 1;
-    font-family: ui-monospace, Menlo, monospace;
-    font-size: 0.78rem;
-    font-weight: 700;
-    color: var(--lo-accent, #06B6D4);
-    letter-spacing: 0.05em;
-    padding-top: 2px;
-    border-left: 2px solid var(--lo-accent, #06B6D4);
-    padding-left: 10px;
-    align-self: stretch;
-  }
-  .lo-row-body { grid-column: 2; }
-  .lo-row-title {
-    display: inline-block;
-    font-weight: 700;
-    font-size: 1rem;
-    color: var(--lo-accent, #06B6D4) !important;
-    text-decoration: none !important;
-    letter-spacing: 0.01em;
-    transition: letter-spacing 0.2s ease;
-  }
-  .lo-row-title:hover {
-    text-decoration: underline !important;
-    letter-spacing: 0.02em;
-  }
-  .lo-row-evidence {
-    color: #cbd5e1;
-    font-size: 0.88rem;
+    font-size: 0.9rem;
+    margin: 12px 0 12px;
     line-height: 1.55;
-    margin-top: 4px;
+    font-style: italic;
   }
-  .lo-row-assessment {
-    display: inline-block;
-    margin-top: 8px;
+  .lo-items-wrap { counter-reset: lo-counter; }
+  .lo-item {
+    display: grid;
+    grid-template-columns: 36px 1fr;
+    gap: 12px;
+    padding: 10px 0;
+    align-items: start;
+    counter-increment: lo-counter;
+  }
+  .lo-item + .lo-item { border-top: 1px dashed rgba(255,255,255,0.05); }
+  .lo-item::before {
+    content: counter(lo-counter, decimal-leading-zero);
     font-family: ui-monospace, Menlo, monospace;
     font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--lo-accent, #06B6D4);
+    padding-top: 3px;
+  }
+  .lo-item-body { min-width: 0; }
+  .lo-item-title {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--lo-accent, #06B6D4) !important;
+    text-decoration: none !important;
+  }
+  .lo-item-title:hover { text-decoration: underline !important; }
+  .lo-item-evidence {
+    color: #cbd5e1;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    margin-top: 3px;
+  }
+  .lo-item-assessment {
+    display: inline-block;
+    margin-top: 6px;
+    font-family: ui-monospace, Menlo, monospace;
+    font-size: 0.7rem;
     color: #94a3b8;
     background: rgba(255,255,255,0.04);
-    padding: 4px 9px 4px 8px;
-    border-left: 2px solid var(--lo-accent, #06B6D4);
-    border-radius: 0 4px 4px 0;
-    letter-spacing: 0.02em;
+    padding: 3px 8px;
+    border-radius: 3px;
   }
-  .lo-row-assessment::before {
-    content: "▸ assessed: ";
+  .lo-item-assessment::before {
+    content: "▸ ";
     color: var(--lo-accent, #06B6D4);
-    font-weight: 700;
   }
   .lo-cat-oop       { --lo-accent: #06B6D4; }
   .lo-cat-control   { --lo-accent: #10B981; }
@@ -256,326 +278,374 @@ requestAnimationFrame(() => {
 <div class="lo-section">
 
 <!-- ───────────── OBJECT-ORIENTED PROGRAMMING ───────────── -->
-<div class="lo-category lo-cat-oop">
-<h4>🏛️ Object-Oriented Programming</h4>
-<p class="lo-cat-desc">Designing modular, reusable game pieces through classes, inheritance, and overrides — the load-bearing structure under every entity in the Gate Game.</p>
-
-<div class="lo-rows">
-    <div class="lo-row">
-    <div class="lo-row-body">
-      <a href="{{site.baseurl}}/oop/writing-classes" class="lo-row-title">Writing Classes</a>
-      <div class="lo-row-evidence">At least 2 custom character classes that extend an engine base class.</div>
-      <div class="lo-row-assessment">Code review of Player.js, Npc.js, Enemy.js</div>
+<details class="lo-dropdown lo-cat-oop">
+  <summary>
+    <span class="lo-summary-icon">🏛️</span>
+    <span class="lo-summary-title">Object-Oriented Programming</span>
+    <span class="lo-summary-count">1 objectives</span>
+  </summary>
+  <div class="lo-dropdown-body">
+    <p class="lo-cat-desc">Designing modular, reusable game pieces through classes, inheritance, and overrides — the load-bearing structure under every entity in the Gate Game.</p>
+    <div class="lo-items-wrap">
+    <div class="lo-item">
+      <div class="lo-item-body">
+        <a href="{{site.baseurl}}/oop/writing-classes" class="lo-item-title">Writing Classes</a>
+        <div class="lo-item-evidence">At least 2 custom character classes that extend an engine base class.</div>
+        <div class="lo-item-assessment">Code review of Player.js, Npc.js, Enemy.js
     </div>
   </div>
-    <div class="lo-row">
-    <div class="lo-row-body">
-      <a href="{{site.baseurl}}/oop/methods-parameters" class="lo-row-title">Methods &amp; Parameters</a>
-      <div class="lo-row-evidence">Methods that take real parameters, e.g. <code>collisionHandler(other, direction)</code>.</div>
-      <div class="lo-row-assessment">Code review of method signatures with 2+ parameters</div>
+</details>
     </div>
-  </div>
-    <div class="lo-row">
-    <div class="lo-row-body">
-      <a href="{{site.baseurl}}/oop/instantiation-objects" class="lo-row-title">Instantiation &amp; Objects</a>
-      <div class="lo-row-evidence">Game entities instantiated through the GameLevel configuration block.</div>
-      <div class="lo-row-assessment">Code review of GameLevel setup arrays</div>
+    <div class="lo-item">
+      <div class="lo-item-body">
+        <a href="{{site.baseurl}}/oop/methods-parameters" class="lo-item-title">Methods &amp; Parameters</a>
+        <div class="lo-item-evidence">Methods that take real parameters, e.g. <code>collisionHandler(other, direction)</code>.</div>
+        <div class="lo-item-assessment">Code review of method signatures with 2+ parameters</div>
+      </div>
     </div>
-  </div>
-    <div class="lo-row">
-    <div class="lo-row-body">
-      <a href="{{site.baseurl}}/oop/inheritance" class="lo-row-title">Inheritance (Basic)</a>
-      <div class="lo-row-evidence">A class hierarchy at least two levels deep (e.g. GameObject → Character → Player).</div>
-      <div class="lo-row-assessment">Code review of <code>extends</code> chain</div>
+    <div class="lo-item">
+      <div class="lo-item-body">
+        <a href="{{site.baseurl}}/oop/instantiation-objects" class="lo-item-title">Instantiation &amp; Objects</a>
+        <div class="lo-item-evidence">Game entities instantiated through the GameLevel configuration block.</div>
+        <div class="lo-item-assessment">Code review of GameLevel setup arrays</div>
+      </div>
     </div>
-  </div>
-    <div class="lo-row">
-    <div class="lo-row-body">
-      <a href="{{site.baseurl}}/oop/method-overriding" class="lo-row-title">Method Overriding</a>
-      <div class="lo-row-evidence">Subclass overrides of <code>update()</code>, <code>draw()</code>, or <code>handleCollision()</code>.</div>
-      <div class="lo-row-assessment">Code review of polymorphic implementations</div>
+    <div class="lo-item">
+      <div class="lo-item-body">
+        <a href="{{site.baseurl}}/oop/inheritance" class="lo-item-title">Inheritance (Basic)</a>
+        <div class="lo-item-evidence">A class hierarchy at least two levels deep (e.g. GameObject → Character → Player).</div>
+        <div class="lo-item-assessment">Code review of <code>extends</code> chain</div>
+      </div>
     </div>
-  </div>
-    <div class="lo-row">
-    <div class="lo-row-body">
-      <a href="{{site.baseurl}}/oop/constructor-chaining" class="lo-row-title">Constructor Chaining</a>
-      <div class="lo-row-evidence">Use of <code>super()</code> to forward initialization data up the chain.</div>
-      <div class="lo-row-assessment">Code review of <code>super(data, gameEnv)</code> calls</div>
+    <div class="lo-item">
+      <div class="lo-item-body">
+        <a href="{{site.baseurl}}/oop/method-overriding" class="lo-item-title">Method Overriding</a>
+        <div class="lo-item-evidence">Subclass overrides of <code>update()</code>, <code>draw()</code>, or <code>handleCollision()</code>.</div>
+        <div class="lo-item-assessment">Code review of polymorphic implementations</div>
+      </div>
     </div>
-  </div>
+    <div class="lo-item">
+      <div class="lo-item-body">
+        <a href="{{site.baseurl}}/oop/constructor-chaining" class="lo-item-title">Constructor Chaining</a>
+        <div class="lo-item-evidence">Use of <code>super()</code> to forward initialization data up the chain.</div>
+        <div class="lo-item-assessment">Code review of <code>super(data, gameEnv)</code> calls</div>
+      </div>
+    </div>
 
 </div>
 </div>
 
 <!-- ───────────── CONTROL STRUCTURES ───────────── -->
-<div class="lo-category lo-cat-control">
-<h4>🔁 Control Structures</h4>
-<p class="lo-cat-desc">The loops and branches that drive the game loop — stepping frames, resolving collisions, and reacting to player state.</p>
-
-<div class="lo-rows">
-    <div class="lo-row">
-    <div class="lo-row-body">
-      <a href="{{site.baseurl}}/control/iteration" class="lo-row-title">Iteration</a>
-      <div class="lo-row-evidence">Loops over game-object arrays and animation frames.</div>
-      <div class="lo-row-assessment">Code review of <code>for</code>, <code>forEach</code>, <code>while</code> usage</div>
+<details class="lo-dropdown lo-cat-control">
+  <summary>
+    <span class="lo-summary-icon">🔁</span>
+    <span class="lo-summary-title">Control Structures</span>
+    <span class="lo-summary-count">1 objectives</span>
+  </summary>
+  <div class="lo-dropdown-body">
+    <p class="lo-cat-desc">The loops and branches that drive the game loop — stepping frames, resolving collisions, and reacting to player state.</p>
+    <div class="lo-items-wrap">
+    <div class="lo-item">
+      <div class="lo-item-body">
+        <a href="{{site.baseurl}}/control/iteration" class="lo-item-title">Iteration</a>
+        <div class="lo-item-evidence">Loops over game-object arrays and animation frames.</div>
+        <div class="lo-item-assessment">Code review of <code>for</code>, <code>forEach</code>, <code>while</code> usage
     </div>
   </div>
-    <div class="lo-row">
-    <div class="lo-row-body">
-      <a href="{{site.baseurl}}/control/conditionals" class="lo-row-title">Conditionals</a>
-      <div class="lo-row-evidence">Collision detection and state transitions guarded by <code>if</code>/<code>else</code>.</div>
-      <div class="lo-row-assessment">Code review of conditional branches</div>
+</details>
     </div>
-  </div>
-    <div class="lo-row">
-    <div class="lo-row-body">
-      <a href="{{site.baseurl}}/control/nested-conditions" class="lo-row-title">Nested Conditions</a>
-      <div class="lo-row-evidence">Multi-factor logic (e.g. power-up + collision + facing direction).</div>
-      <div class="lo-row-assessment">Code review of nested conditionals</div>
+    <div class="lo-item">
+      <div class="lo-item-body">
+        <a href="{{site.baseurl}}/control/conditionals" class="lo-item-title">Conditionals</a>
+        <div class="lo-item-evidence">Collision detection and state transitions guarded by <code>if</code>/<code>else</code>.</div>
+        <div class="lo-item-assessment">Code review of conditional branches</div>
+      </div>
     </div>
-  </div>
+    <div class="lo-item">
+      <div class="lo-item-body">
+        <a href="{{site.baseurl}}/control/nested-conditions" class="lo-item-title">Nested Conditions</a>
+        <div class="lo-item-evidence">Multi-factor logic (e.g. power-up + collision + facing direction).</div>
+        <div class="lo-item-assessment">Code review of nested conditionals</div>
+      </div>
+    </div>
 
 </div>
 </div>
 
 <!-- ───────────── DATA TYPES ───────────── -->
-<div class="lo-category lo-cat-data">
-<h4>🧮 Data Types</h4>
-<p class="lo-cat-desc">The values that position, label, flag, and configure everything inside the level.</p>
-
-<div class="lo-rows">
-    <div class="lo-row">
-    <div class="lo-row-body">
-      <a href="{{site.baseurl}}/data-types/numbers" class="lo-row-title">Numbers</a>
-      <div class="lo-row-evidence">Position, velocity, and score tracking.</div>
-      <div class="lo-row-assessment">Code review of numeric properties</div>
+<details class="lo-dropdown lo-cat-data">
+  <summary>
+    <span class="lo-summary-icon">🧮</span>
+    <span class="lo-summary-title">Data Types</span>
+    <span class="lo-summary-count">1 objectives</span>
+  </summary>
+  <div class="lo-dropdown-body">
+    <p class="lo-cat-desc">The values that position, label, flag, and configure everything inside the level.</p>
+    <div class="lo-items-wrap">
+    <div class="lo-item">
+      <div class="lo-item-body">
+        <a href="{{site.baseurl}}/data-types/numbers" class="lo-item-title">Numbers</a>
+        <div class="lo-item-evidence">Position, velocity, and score tracking.</div>
+        <div class="lo-item-assessment">Code review of numeric properties
     </div>
   </div>
-    <div class="lo-row">
-    <div class="lo-row-body">
-      <a href="{{site.baseurl}}/data-types/strings" class="lo-row-title">Strings</a>
-      <div class="lo-row-evidence">Character names, sprite paths, level state labels.</div>
-      <div class="lo-row-assessment">Code review of string handling</div>
+</details>
     </div>
-  </div>
-    <div class="lo-row">
-    <div class="lo-row-body">
-      <a href="{{site.baseurl}}/data-types/booleans" class="lo-row-title">Booleans</a>
-      <div class="lo-row-evidence">State flags like <code>isJumping</code>, <code>isPaused</code>, <code>hasKey</code>.</div>
-      <div class="lo-row-assessment">Code review of boolean logic</div>
+    <div class="lo-item">
+      <div class="lo-item-body">
+        <a href="{{site.baseurl}}/data-types/strings" class="lo-item-title">Strings</a>
+        <div class="lo-item-evidence">Character names, sprite paths, level state labels.</div>
+        <div class="lo-item-assessment">Code review of string handling</div>
+      </div>
     </div>
-  </div>
-    <div class="lo-row">
-    <div class="lo-row-body">
-      <a href="{{site.baseurl}}/data-types/arrays" class="lo-row-title">Arrays</a>
-      <div class="lo-row-evidence">Collections of game objects and level data.</div>
-      <div class="lo-row-assessment">Code review of array operations</div>
+    <div class="lo-item">
+      <div class="lo-item-body">
+        <a href="{{site.baseurl}}/data-types/booleans" class="lo-item-title">Booleans</a>
+        <div class="lo-item-evidence">State flags like <code>isJumping</code>, <code>isPaused</code>, <code>hasKey</code>.</div>
+        <div class="lo-item-assessment">Code review of boolean logic</div>
+      </div>
     </div>
-  </div>
-    <div class="lo-row">
-    <div class="lo-row-body">
-      <a href="{{site.baseurl}}/data-types/objects" class="lo-row-title">Objects (JSON)</a>
-      <div class="lo-row-evidence">Sprite-data and configuration object literals.</div>
-      <div class="lo-row-assessment">Code review of object literal usage</div>
+    <div class="lo-item">
+      <div class="lo-item-body">
+        <a href="{{site.baseurl}}/data-types/arrays" class="lo-item-title">Arrays</a>
+        <div class="lo-item-evidence">Collections of game objects and level data.</div>
+        <div class="lo-item-assessment">Code review of array operations</div>
+      </div>
     </div>
-  </div>
+    <div class="lo-item">
+      <div class="lo-item-body">
+        <a href="{{site.baseurl}}/data-types/objects" class="lo-item-title">Objects (JSON)</a>
+        <div class="lo-item-evidence">Sprite-data and configuration object literals.</div>
+        <div class="lo-item-assessment">Code review of object literal usage</div>
+      </div>
+    </div>
 
 </div>
 </div>
 
 <!-- ───────────── OPERATORS ───────────── -->
-<div class="lo-category lo-cat-operators">
-<h4>➕ Operators</h4>
-<p class="lo-cat-desc">Math operators move the world, boolean operators decide what happens, string operators assemble the text the player reads.</p>
-
-<div class="lo-rows">
-    <div class="lo-row">
-    <div class="lo-row-body">
-      <a href="{{site.baseurl}}/operators/mathematical" class="lo-row-title">Mathematical</a>
-      <div class="lo-row-evidence">Physics math (gravity, velocity, collision response).</div>
-      <div class="lo-row-assessment">Code review of arithmetic in physics paths</div>
+<details class="lo-dropdown lo-cat-operators">
+  <summary>
+    <span class="lo-summary-icon">➕</span>
+    <span class="lo-summary-title">Operators</span>
+    <span class="lo-summary-count">1 objectives</span>
+  </summary>
+  <div class="lo-dropdown-body">
+    <p class="lo-cat-desc">Math operators move the world, boolean operators decide what happens, string operators assemble the text the player reads.</p>
+    <div class="lo-items-wrap">
+    <div class="lo-item">
+      <div class="lo-item-body">
+        <a href="{{site.baseurl}}/operators/mathematical" class="lo-item-title">Mathematical</a>
+        <div class="lo-item-evidence">Physics math (gravity, velocity, collision response).</div>
+        <div class="lo-item-assessment">Code review of arithmetic in physics paths
     </div>
   </div>
-    <div class="lo-row">
-    <div class="lo-row-body">
-      <a href="{{site.baseurl}}/operators/string-ops" class="lo-row-title">String Operations</a>
-      <div class="lo-row-evidence">Path building and on-screen text composition.</div>
-      <div class="lo-row-assessment">Code review of template literals and concatenation</div>
+</details>
     </div>
-  </div>
-    <div class="lo-row">
-    <div class="lo-row-body">
-      <a href="{{site.baseurl}}/operators/boolean-expressions" class="lo-row-title">Boolean Expressions</a>
-      <div class="lo-row-evidence">Compound conditions in level logic.</div>
-      <div class="lo-row-assessment">Code review of <code>&amp;&amp;</code>, <code>||</code>, <code>!</code></div>
+    <div class="lo-item">
+      <div class="lo-item-body">
+        <a href="{{site.baseurl}}/operators/string-ops" class="lo-item-title">String Operations</a>
+        <div class="lo-item-evidence">Path building and on-screen text composition.</div>
+        <div class="lo-item-assessment">Code review of template literals and concatenation</div>
+      </div>
     </div>
-  </div>
+    <div class="lo-item">
+      <div class="lo-item-body">
+        <a href="{{site.baseurl}}/operators/boolean-expressions" class="lo-item-title">Boolean Expressions</a>
+        <div class="lo-item-evidence">Compound conditions in level logic.</div>
+        <div class="lo-item-assessment">Code review of <code>&amp;&amp;</code>, <code>||</code>, <code>!</code></div>
+      </div>
+    </div>
 
 </div>
 </div>
 
 <!-- ───────────── INPUT / OUTPUT ───────────── -->
-<div class="lo-category lo-cat-io">
-<h4>🎮 Input / Output</h4>
-<p class="lo-cat-desc">The connection between the player and the game world, and between the game and external services like the leaderboard and NPC AI.</p>
-
-<div class="lo-rows">
-    <div class="lo-row">
-    <div class="lo-row-body">
-      <a href="{{site.baseurl}}/io/keyboard" class="lo-row-title">Keyboard Input</a>
-      <div class="lo-row-evidence">Arrow, Space, and WASD controls bound through event listeners.</div>
-      <div class="lo-row-assessment">Testing of key event handlers</div>
+<details class="lo-dropdown lo-cat-io">
+  <summary>
+    <span class="lo-summary-icon">🎮</span>
+    <span class="lo-summary-title">Input / Output</span>
+    <span class="lo-summary-count">1 objectives</span>
+  </summary>
+  <div class="lo-dropdown-body">
+    <p class="lo-cat-desc">The connection between the player and the game world, and between the game and external services like the leaderboard and NPC AI.</p>
+    <div class="lo-items-wrap">
+    <div class="lo-item">
+      <div class="lo-item-body">
+        <a href="{{site.baseurl}}/io/keyboard" class="lo-item-title">Keyboard Input</a>
+        <div class="lo-item-evidence">Arrow, Space, and WASD controls bound through event listeners.</div>
+        <div class="lo-item-assessment">Testing of key event handlers
     </div>
   </div>
-    <div class="lo-row">
-    <div class="lo-row-body">
-      <a href="{{site.baseurl}}/io/canvas" class="lo-row-title">Canvas Rendering</a>
-      <div class="lo-row-evidence">Sprite, background, and platform drawing through the Canvas API.</div>
-      <div class="lo-row-assessment">Code review of <code>draw()</code> implementations</div>
+</details>
     </div>
-  </div>
-    <div class="lo-row">
-    <div class="lo-row-body">
-      <a href="{{site.baseurl}}/io/gameenv" class="lo-row-title">GameEnv Configuration</a>
-      <div class="lo-row-evidence">Canvas sizing, difficulty levels, and global game settings.</div>
-      <div class="lo-row-assessment">Code review of <code>GameEnv.create()</code> and GameSetup.js</div>
+    <div class="lo-item">
+      <div class="lo-item-body">
+        <a href="{{site.baseurl}}/io/canvas" class="lo-item-title">Canvas Rendering</a>
+        <div class="lo-item-evidence">Sprite, background, and platform drawing through the Canvas API.</div>
+        <div class="lo-item-assessment">Code review of <code>draw()</code> implementations</div>
+      </div>
     </div>
-  </div>
-    <div class="lo-row">
-    <div class="lo-row-body">
-      <a href="{{site.baseurl}}/io/api" class="lo-row-title">API Integration</a>
-      <div class="lo-row-evidence">Leaderboard API integration (POST/GET scores).</div>
-      <div class="lo-row-assessment">Code review of fetch calls with error handling</div>
+    <div class="lo-item">
+      <div class="lo-item-body">
+        <a href="{{site.baseurl}}/io/gameenv" class="lo-item-title">GameEnv Configuration</a>
+        <div class="lo-item-evidence">Canvas sizing, difficulty levels, and global game settings.</div>
+        <div class="lo-item-assessment">Code review of <code>GameEnv.create()</code> and GameSetup.js</div>
+      </div>
     </div>
-  </div>
-    <div class="lo-row">
-    <div class="lo-row-body">
-      <a href="{{site.baseurl}}/io/async" class="lo-row-title">Asynchronous I/O</a>
-      <div class="lo-row-evidence">Promises or <code>async</code>/<code>await</code> around API requests.</div>
-      <div class="lo-row-assessment">Code review of async/await or <code>.then()</code> chains</div>
+    <div class="lo-item">
+      <div class="lo-item-body">
+        <a href="{{site.baseurl}}/io/api" class="lo-item-title">API Integration</a>
+        <div class="lo-item-evidence">Leaderboard API integration (POST/GET scores).</div>
+        <div class="lo-item-assessment">Code review of fetch calls with error handling</div>
+      </div>
     </div>
-  </div>
-    <div class="lo-row">
-    <div class="lo-row-body">
-      <a href="{{site.baseurl}}/io/json-parsing" class="lo-row-title">JSON Parsing</a>
-      <div class="lo-row-evidence">Parsing leaderboard and NPC-AI responses.</div>
-      <div class="lo-row-assessment">Code review of <code>JSON.parse()</code> and destructuring</div>
+    <div class="lo-item">
+      <div class="lo-item-body">
+        <a href="{{site.baseurl}}/io/async" class="lo-item-title">Asynchronous I/O</a>
+        <div class="lo-item-evidence">Promises or <code>async</code>/<code>await</code> around API requests.</div>
+        <div class="lo-item-assessment">Code review of async/await or <code>.then()</code> chains</div>
+      </div>
     </div>
-  </div>
+    <div class="lo-item">
+      <div class="lo-item-body">
+        <a href="{{site.baseurl}}/io/json-parsing" class="lo-item-title">JSON Parsing</a>
+        <div class="lo-item-evidence">Parsing leaderboard and NPC-AI responses.</div>
+        <div class="lo-item-assessment">Code review of <code>JSON.parse()</code> and destructuring</div>
+      </div>
+    </div>
 
 </div>
 </div>
 
 <!-- ───────────── DOCUMENTATION ───────────── -->
-<div class="lo-category lo-cat-docs">
-<h4>📝 Documentation</h4>
-<p class="lo-cat-desc">JSDoc, mini-lessons, and annotated highlights that turn working code into code that explains itself.</p>
-
-<div class="lo-rows">
-    <div class="lo-row">
-    <div class="lo-row-body">
-      <a href="{{site.baseurl}}/docs/comments" class="lo-row-title">Code Comments</a>
-      <div class="lo-row-evidence">JSDoc on custom classes and methods.</div>
-      <div class="lo-row-assessment">Code review with comment density above 10%</div>
+<details class="lo-dropdown lo-cat-docs">
+  <summary>
+    <span class="lo-summary-icon">📝</span>
+    <span class="lo-summary-title">Documentation</span>
+    <span class="lo-summary-count">1 objectives</span>
+  </summary>
+  <div class="lo-dropdown-body">
+    <p class="lo-cat-desc">JSDoc, mini-lessons, and annotated highlights that turn working code into code that explains itself.</p>
+    <div class="lo-items-wrap">
+    <div class="lo-item">
+      <div class="lo-item-body">
+        <a href="{{site.baseurl}}/docs/comments" class="lo-item-title">Code Comments</a>
+        <div class="lo-item-evidence">JSDoc on custom classes and methods.</div>
+        <div class="lo-item-assessment">Code review with comment density above 10%
     </div>
   </div>
-    <div class="lo-row">
-    <div class="lo-row-body">
-      <a href="{{site.baseurl}}/docs/mini-lesson" class="lo-row-title">Mini-Lesson Documentation</a>
-      <div class="lo-row-evidence">Comic / visual post with an embedded runtime demo of the level.</div>
-      <div class="lo-row-assessment">Portfolio review of the mini-lesson page</div>
+</details>
     </div>
-  </div>
-    <div class="lo-row">
-    <div class="lo-row-body">
-      <a href="{{site.baseurl}}/docs/highlights" class="lo-row-title">Code Highlights</a>
-      <div class="lo-row-evidence">Annotated snippets covering OOP, APIs, and collision logic.</div>
-      <div class="lo-row-assessment">Portfolio review of highlighted examples</div>
+    <div class="lo-item">
+      <div class="lo-item-body">
+        <a href="{{site.baseurl}}/docs/mini-lesson" class="lo-item-title">Mini-Lesson Documentation</a>
+        <div class="lo-item-evidence">Comic / visual post with an embedded runtime demo of the level.</div>
+        <div class="lo-item-assessment">Portfolio review of the mini-lesson page</div>
+      </div>
     </div>
-  </div>
+    <div class="lo-item">
+      <div class="lo-item-body">
+        <a href="{{site.baseurl}}/docs/highlights" class="lo-item-title">Code Highlights</a>
+        <div class="lo-item-evidence">Annotated snippets covering OOP, APIs, and collision logic.</div>
+        <div class="lo-item-assessment">Portfolio review of highlighted examples</div>
+      </div>
+    </div>
 
 </div>
 </div>
 
 <!-- ───────────── DEBUGGING ───────────── -->
-<div class="lo-category lo-cat-debug">
-<h4>🐛 Debugging</h4>
-<p class="lo-cat-desc">Working across the Chrome DevTools surface — from console traces in the game loop to network failures in the leaderboard API.</p>
-
-<div class="lo-rows">
-    <div class="lo-row">
-    <div class="lo-row-body">
-      <a href="{{site.baseurl}}/debug/console" class="lo-row-title">Console Debugging</a>
-      <div class="lo-row-evidence"><code>console.log</code> tracing for state, variables, and method calls.</div>
-      <div class="lo-row-assessment">Code review of strategic logging in update/collision paths</div>
+<details class="lo-dropdown lo-cat-debug">
+  <summary>
+    <span class="lo-summary-icon">🐛</span>
+    <span class="lo-summary-title">Debugging</span>
+    <span class="lo-summary-count">1 objectives</span>
+  </summary>
+  <div class="lo-dropdown-body">
+    <p class="lo-cat-desc">Working across the Chrome DevTools surface — from console traces in the game loop to network failures in the leaderboard API.</p>
+    <div class="lo-items-wrap">
+    <div class="lo-item">
+      <div class="lo-item-body">
+        <a href="{{site.baseurl}}/debug/console" class="lo-item-title">Console Debugging</a>
+        <div class="lo-item-evidence"><code>console.log</code> tracing for state, variables, and method calls.</div>
+        <div class="lo-item-assessment">Code review of strategic logging in update/collision paths
     </div>
   </div>
-    <div class="lo-row">
-    <div class="lo-row-body">
-      <a href="{{site.baseurl}}/debug/hitbox" class="lo-row-title">Hit Box Visualization</a>
-      <div class="lo-row-evidence">Drawn collision boundaries used to tune detection.</div>
-      <div class="lo-row-assessment">Live demo toggling hit-box overlays</div>
+</details>
     </div>
-  </div>
-    <div class="lo-row">
-    <div class="lo-row-body">
-      <a href="{{site.baseurl}}/debug/sources" class="lo-row-title">Source-Level Debugging</a>
-      <div class="lo-row-evidence">Breakpoints in the Sources tab to step through execution.</div>
-      <div class="lo-row-assessment">Demo of pausing and inspecting flow</div>
+    <div class="lo-item">
+      <div class="lo-item-body">
+        <a href="{{site.baseurl}}/debug/hitbox" class="lo-item-title">Hit Box Visualization</a>
+        <div class="lo-item-evidence">Drawn collision boundaries used to tune detection.</div>
+        <div class="lo-item-assessment">Live demo toggling hit-box overlays</div>
+      </div>
     </div>
-  </div>
-    <div class="lo-row">
-    <div class="lo-row-body">
-      <a href="{{site.baseurl}}/debug/network" class="lo-row-title">Network Debugging</a>
-      <div class="lo-row-evidence">Network-tab inspection of API calls, CORS, and status codes.</div>
-      <div class="lo-row-assessment">Demo of inspecting fetch requests and responses</div>
+    <div class="lo-item">
+      <div class="lo-item-body">
+        <a href="{{site.baseurl}}/debug/sources" class="lo-item-title">Source-Level Debugging</a>
+        <div class="lo-item-evidence">Breakpoints in the Sources tab to step through execution.</div>
+        <div class="lo-item-assessment">Demo of pausing and inspecting flow</div>
+      </div>
     </div>
-  </div>
-    <div class="lo-row">
-    <div class="lo-row-body">
-      <a href="{{site.baseurl}}/debug/application" class="lo-row-title">Application Debugging</a>
-      <div class="lo-row-evidence">Cookies, localStorage, and session data for login/state.</div>
-      <div class="lo-row-assessment">Demo of the Application tab in use</div>
+    <div class="lo-item">
+      <div class="lo-item-body">
+        <a href="{{site.baseurl}}/debug/network" class="lo-item-title">Network Debugging</a>
+        <div class="lo-item-evidence">Network-tab inspection of API calls, CORS, and status codes.</div>
+        <div class="lo-item-assessment">Demo of inspecting fetch requests and responses</div>
+      </div>
     </div>
-  </div>
-    <div class="lo-row">
-    <div class="lo-row-body">
-      <a href="{{site.baseurl}}/debug/element" class="lo-row-title">Element Inspection</a>
-      <div class="lo-row-evidence">Inspecting the canvas and surrounding DOM in the Elements panel.</div>
-      <div class="lo-row-assessment">Demo of element-property inspection</div>
+    <div class="lo-item">
+      <div class="lo-item-body">
+        <a href="{{site.baseurl}}/debug/application" class="lo-item-title">Application Debugging</a>
+        <div class="lo-item-evidence">Cookies, localStorage, and session data for login/state.</div>
+        <div class="lo-item-assessment">Demo of the Application tab in use</div>
+      </div>
     </div>
-  </div>
+    <div class="lo-item">
+      <div class="lo-item-body">
+        <a href="{{site.baseurl}}/debug/element" class="lo-item-title">Element Inspection</a>
+        <div class="lo-item-evidence">Inspecting the canvas and surrounding DOM in the Elements panel.</div>
+        <div class="lo-item-assessment">Demo of element-property inspection</div>
+      </div>
+    </div>
 
 </div>
 </div>
 
 <!-- ───────────── TESTING & VERIFICATION ───────────── -->
-<div class="lo-category lo-cat-testing">
-<h4>✅ Testing &amp; Verification</h4>
-<p class="lo-cat-desc">Showing the level actually plays and the integrations actually work — through gameplay, end-to-end checks, and graceful error handling.</p>
-
-<div class="lo-rows">
-    <div class="lo-row">
-    <div class="lo-row-body">
-      <a href="{{site.baseurl}}/test/gameplay" class="lo-row-title">Gameplay Testing</a>
-      <div class="lo-row-evidence">Level completion, character interaction, and collision verified by play.</div>
-      <div class="lo-row-assessment">Live demo of a clean playthrough</div>
+<details class="lo-dropdown lo-cat-testing">
+  <summary>
+    <span class="lo-summary-icon">✅</span>
+    <span class="lo-summary-title">Testing &amp; Verification</span>
+    <span class="lo-summary-count">1 objectives</span>
+  </summary>
+  <div class="lo-dropdown-body">
+    <p class="lo-cat-desc">Showing the level actually plays and the integrations actually work — through gameplay, end-to-end checks, and graceful error handling.</p>
+    <div class="lo-items-wrap">
+    <div class="lo-item">
+      <div class="lo-item-body">
+        <a href="{{site.baseurl}}/test/gameplay" class="lo-item-title">Gameplay Testing</a>
+        <div class="lo-item-evidence">Level completion, character interaction, and collision verified by play.</div>
+        <div class="lo-item-assessment">Live demo of a clean playthrough
     </div>
   </div>
-    <div class="lo-row">
-    <div class="lo-row-body">
-      <a href="{{site.baseurl}}/test/integration" class="lo-row-title">Integration Testing</a>
-      <div class="lo-row-evidence">Leaderboard and NPC-AI APIs exercised against the live backend.</div>
-      <div class="lo-row-assessment">Demo of score saves and AI responses</div>
+</details>
     </div>
-  </div>
-    <div class="lo-row">
-    <div class="lo-row-body">
-      <a href="{{site.baseurl}}/test/error-handling" class="lo-row-title">API Error Handling</a>
-      <div class="lo-row-evidence"><code>try</code>/<code>catch</code> around API calls and network failures.</div>
-      <div class="lo-row-assessment">Code review of fetch-failure handling</div>
+    <div class="lo-item">
+      <div class="lo-item-body">
+        <a href="{{site.baseurl}}/test/integration" class="lo-item-title">Integration Testing</a>
+        <div class="lo-item-evidence">Leaderboard and NPC-AI APIs exercised against the live backend.</div>
+        <div class="lo-item-assessment">Demo of score saves and AI responses</div>
+      </div>
     </div>
-  </div>
+    <div class="lo-item">
+      <div class="lo-item-body">
+        <a href="{{site.baseurl}}/test/error-handling" class="lo-item-title">API Error Handling</a>
+        <div class="lo-item-evidence"><code>try</code>/<code>catch</code> around API calls and network failures.</div>
+        <div class="lo-item-assessment">Code review of fetch-failure handling</div>
+      </div>
+    </div>
 
 </div>
 </div>
@@ -597,3 +667,5 @@ requestAnimationFrame(() => {
 - ✅ A complete, playable custom level tested in GameBuilder and in the team repository
 
 ---
+
+*JavaScript is accepted in place of Java for CS 111 credit at Mira Costa College. See the [CS 111 Course Info](https://catalog.miracosta.edu/disciplines/computerscience/#courseinventory) and the [Math &amp; CS Pathway](https://surf.miracosta.edu/psc/ps/EMPLOYEE/SA/c/MCC_CUSTOM.MZ_ACAD_MAP_SS.GBL?MAP_ID=1167).*
