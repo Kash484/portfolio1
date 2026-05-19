@@ -294,7 +294,6 @@ requestAnimationFrame(() => {
     </summary>
     <div class="lo-item-content">
       <div class="lo-item-evidence">At least 2 custom character classes that extend an engine base class.</div>
-      <a href="{{site.baseurl}}/oop/writing-classes" class="lo-item-link">→ view dedicated page</a>
       <div class="lo-item-assess">Code review of Player.js, Npc.js, Enemy.js</div>
     </div>
   </details>
@@ -305,7 +304,6 @@ requestAnimationFrame(() => {
     </summary>
     <div class="lo-item-content">
       <div class="lo-item-evidence">Methods that take real parameters, e.g. <code>collisionHandler(other, direction)</code>.</div>
-      <a href="{{site.baseurl}}/oop/methods-parameters" class="lo-item-link">→ view dedicated page</a>
       <div class="lo-item-assess">Code review of method signatures with 2+ parameters</div>
     </div>
   </details>
@@ -316,7 +314,6 @@ requestAnimationFrame(() => {
     </summary>
     <div class="lo-item-content">
       <div class="lo-item-evidence">Game entities instantiated through the GameLevel configuration block.</div>
-      <a href="{{site.baseurl}}/oop/instantiation-objects" class="lo-item-link">→ view dedicated page</a>
       <div class="lo-item-assess">Code review of GameLevel setup arrays</div>
     </div>
   </details>
@@ -327,7 +324,6 @@ requestAnimationFrame(() => {
     </summary>
     <div class="lo-item-content">
       <div class="lo-item-evidence">A class hierarchy at least two levels deep (e.g. GameObject → Character → Player).</div>
-      <a href="{{site.baseurl}}/oop/inheritance" class="lo-item-link">→ view dedicated page</a>
       <div class="lo-item-assess">Code review of <code>extends</code> chain</div>
     </div>
   </details>
@@ -338,7 +334,6 @@ requestAnimationFrame(() => {
     </summary>
     <div class="lo-item-content">
       <div class="lo-item-evidence">Subclass overrides of <code>update()</code>, <code>draw()</code>, or <code>handleCollision()</code>.</div>
-      <a href="{{site.baseurl}}/oop/method-overriding" class="lo-item-link">→ view dedicated page</a>
       <div class="lo-item-assess">Code review of polymorphic implementations</div>
     </div>
   </details>
@@ -349,7 +344,6 @@ requestAnimationFrame(() => {
     </summary>
     <div class="lo-item-content">
       <div class="lo-item-evidence">Use of <code>super()</code> to forward initialization data up the chain.</div>
-      <a href="{{site.baseurl}}/oop/constructor-chaining" class="lo-item-link">→ view dedicated page</a>
       <div class="lo-item-assess">Code review of <code>super(data, gameEnv)</code> calls</div>
     </div>
   </details>
@@ -369,7 +363,6 @@ requestAnimationFrame(() => {
     </summary>
     <div class="lo-item-content">
       <div class="lo-item-evidence">Loops over game-object arrays and animation frames.</div>
-      <a href="{{site.baseurl}}/control/iteration" class="lo-item-link">→ view dedicated page</a>
       <div class="lo-item-assess">Code review of <code>for</code>, <code>forEach</code>, <code>while</code> usage</div>
     </div>
   </details>
@@ -380,7 +373,6 @@ requestAnimationFrame(() => {
     </summary>
     <div class="lo-item-content">
       <div class="lo-item-evidence">Collision detection and state transitions guarded by <code>if</code>/<code>else</code>.</div>
-      <a href="{{site.baseurl}}/control/conditionals" class="lo-item-link">→ view dedicated page</a>
       <div class="lo-item-assess">Code review of conditional branches</div>
     </div>
   </details>
@@ -391,7 +383,6 @@ requestAnimationFrame(() => {
     </summary>
     <div class="lo-item-content">
       <div class="lo-item-evidence">Multi-factor logic (e.g. power-up + collision + facing direction).</div>
-      <a href="{{site.baseurl}}/control/nested-conditions" class="lo-item-link">→ view dedicated page</a>
       <div class="lo-item-assess">Code review of nested conditionals</div>
     </div>
   </details>
@@ -411,7 +402,6 @@ requestAnimationFrame(() => {
     </summary>
     <div class="lo-item-content">
       <div class="lo-item-evidence">Position, velocity, and score tracking.</div>
-      <a href="{{site.baseurl}}/data-types/numbers" class="lo-item-link">→ view dedicated page</a>
       <div class="lo-item-assess">Code review of numeric properties</div>
     </div>
   </details>
@@ -422,7 +412,6 @@ requestAnimationFrame(() => {
     </summary>
     <div class="lo-item-content">
       <div class="lo-item-evidence">Character names, sprite paths, level state labels.</div>
-      <a href="{{site.baseurl}}/data-types/strings" class="lo-item-link">→ view dedicated page</a>
       <div class="lo-item-assess">Code review of string handling</div>
     </div>
   </details>
@@ -433,7 +422,6 @@ requestAnimationFrame(() => {
     </summary>
     <div class="lo-item-content">
       <div class="lo-item-evidence">State flags like <code>isJumping</code>, <code>isPaused</code>, <code>hasKey</code>.</div>
-      <a href="{{site.baseurl}}/data-types/booleans" class="lo-item-link">→ view dedicated page</a>
       <div class="lo-item-assess">Code review of boolean logic</div>
     </div>
   </details>
@@ -444,7 +432,6 @@ requestAnimationFrame(() => {
     </summary>
     <div class="lo-item-content">
       <div class="lo-item-evidence">Collections of game objects and level data.</div>
-      <a href="{{site.baseurl}}/data-types/arrays" class="lo-item-link">→ view dedicated page</a>
       <div class="lo-item-assess">Code review of array operations</div>
     </div>
   </details>
@@ -455,7 +442,6 @@ requestAnimationFrame(() => {
     </summary>
     <div class="lo-item-content">
       <div class="lo-item-evidence">Sprite-data and configuration object literals.</div>
-      <a href="{{site.baseurl}}/data-types/objects" class="lo-item-link">→ view dedicated page</a>
       <div class="lo-item-assess">Code review of object literal usage</div>
     </div>
   </details>
@@ -475,7 +461,6 @@ requestAnimationFrame(() => {
     </summary>
     <div class="lo-item-content">
       <div class="lo-item-evidence">Physics math (gravity, velocity, collision response).</div>
-      <a href="{{site.baseurl}}/operators/mathematical" class="lo-item-link">→ view dedicated page</a>
       <div class="lo-item-assess">Code review of arithmetic in physics paths</div>
     </div>
   </details>
@@ -486,7 +471,6 @@ requestAnimationFrame(() => {
     </summary>
     <div class="lo-item-content">
       <div class="lo-item-evidence">Path building and on-screen text composition.</div>
-      <a href="{{site.baseurl}}/operators/string-ops" class="lo-item-link">→ view dedicated page</a>
       <div class="lo-item-assess">Code review of template literals and concatenation</div>
     </div>
   </details>
@@ -497,7 +481,6 @@ requestAnimationFrame(() => {
     </summary>
     <div class="lo-item-content">
       <div class="lo-item-evidence">Compound conditions in level logic.</div>
-      <a href="{{site.baseurl}}/operators/boolean-expressions" class="lo-item-link">→ view dedicated page</a>
       <div class="lo-item-assess">Code review of <code>&amp;&amp;</code>, <code>||</code>, <code>!</code></div>
     </div>
   </details>
@@ -517,7 +500,6 @@ requestAnimationFrame(() => {
     </summary>
     <div class="lo-item-content">
       <div class="lo-item-evidence">Arrow, Space, and WASD controls bound through event listeners.</div>
-      <a href="{{site.baseurl}}/io/keyboard" class="lo-item-link">→ view dedicated page</a>
       <div class="lo-item-assess">Testing of key event handlers</div>
     </div>
   </details>
@@ -528,7 +510,6 @@ requestAnimationFrame(() => {
     </summary>
     <div class="lo-item-content">
       <div class="lo-item-evidence">Sprite, background, and platform drawing through the Canvas API.</div>
-      <a href="{{site.baseurl}}/io/canvas" class="lo-item-link">→ view dedicated page</a>
       <div class="lo-item-assess">Code review of <code>draw()</code> implementations</div>
     </div>
   </details>
@@ -539,7 +520,6 @@ requestAnimationFrame(() => {
     </summary>
     <div class="lo-item-content">
       <div class="lo-item-evidence">Canvas sizing, difficulty levels, and global game settings.</div>
-      <a href="{{site.baseurl}}/io/gameenv" class="lo-item-link">→ view dedicated page</a>
       <div class="lo-item-assess">Code review of <code>GameEnv.create()</code> and GameSetup.js</div>
     </div>
   </details>
@@ -550,7 +530,6 @@ requestAnimationFrame(() => {
     </summary>
     <div class="lo-item-content">
       <div class="lo-item-evidence">Leaderboard API integration (POST/GET scores).</div>
-      <a href="{{site.baseurl}}/io/api" class="lo-item-link">→ view dedicated page</a>
       <div class="lo-item-assess">Code review of fetch calls with error handling</div>
     </div>
   </details>
@@ -561,7 +540,6 @@ requestAnimationFrame(() => {
     </summary>
     <div class="lo-item-content">
       <div class="lo-item-evidence">Promises or <code>async</code>/<code>await</code> around API requests.</div>
-      <a href="{{site.baseurl}}/io/async" class="lo-item-link">→ view dedicated page</a>
       <div class="lo-item-assess">Code review of async/await or <code>.then()</code> chains</div>
     </div>
   </details>
@@ -572,7 +550,6 @@ requestAnimationFrame(() => {
     </summary>
     <div class="lo-item-content">
       <div class="lo-item-evidence">Parsing leaderboard and NPC-AI responses.</div>
-      <a href="{{site.baseurl}}/io/json-parsing" class="lo-item-link">→ view dedicated page</a>
       <div class="lo-item-assess">Code review of <code>JSON.parse()</code> and destructuring</div>
     </div>
   </details>
@@ -592,7 +569,6 @@ requestAnimationFrame(() => {
     </summary>
     <div class="lo-item-content">
       <div class="lo-item-evidence">JSDoc on custom classes and methods.</div>
-      <a href="{{site.baseurl}}/docs/comments" class="lo-item-link">→ view dedicated page</a>
       <div class="lo-item-assess">Code review with comment density above 10%</div>
     </div>
   </details>
@@ -603,7 +579,6 @@ requestAnimationFrame(() => {
     </summary>
     <div class="lo-item-content">
       <div class="lo-item-evidence">Comic / visual post with an embedded runtime demo of the level.</div>
-      <a href="{{site.baseurl}}/docs/mini-lesson" class="lo-item-link">→ view dedicated page</a>
       <div class="lo-item-assess">Portfolio review of the mini-lesson page</div>
     </div>
   </details>
@@ -614,7 +589,6 @@ requestAnimationFrame(() => {
     </summary>
     <div class="lo-item-content">
       <div class="lo-item-evidence">Annotated snippets covering OOP, APIs, and collision logic.</div>
-      <a href="{{site.baseurl}}/docs/highlights" class="lo-item-link">→ view dedicated page</a>
       <div class="lo-item-assess">Portfolio review of highlighted examples</div>
     </div>
   </details>
@@ -634,7 +608,6 @@ requestAnimationFrame(() => {
     </summary>
     <div class="lo-item-content">
       <div class="lo-item-evidence"><code>console.log</code> tracing for state, variables, and method calls.</div>
-      <a href="{{site.baseurl}}/debug/console" class="lo-item-link">→ view dedicated page</a>
       <div class="lo-item-assess">Code review of strategic logging in update/collision paths</div>
     </div>
   </details>
@@ -645,7 +618,6 @@ requestAnimationFrame(() => {
     </summary>
     <div class="lo-item-content">
       <div class="lo-item-evidence">Drawn collision boundaries used to tune detection.</div>
-      <a href="{{site.baseurl}}/debug/hitbox" class="lo-item-link">→ view dedicated page</a>
       <div class="lo-item-assess">Live demo toggling hit-box overlays</div>
     </div>
   </details>
@@ -656,7 +628,6 @@ requestAnimationFrame(() => {
     </summary>
     <div class="lo-item-content">
       <div class="lo-item-evidence">Breakpoints in the Sources tab to step through execution.</div>
-      <a href="{{site.baseurl}}/debug/sources" class="lo-item-link">→ view dedicated page</a>
       <div class="lo-item-assess">Demo of pausing and inspecting flow</div>
     </div>
   </details>
@@ -667,7 +638,6 @@ requestAnimationFrame(() => {
     </summary>
     <div class="lo-item-content">
       <div class="lo-item-evidence">Network-tab inspection of API calls, CORS, and status codes.</div>
-      <a href="{{site.baseurl}}/debug/network" class="lo-item-link">→ view dedicated page</a>
       <div class="lo-item-assess">Demo of inspecting fetch requests and responses</div>
     </div>
   </details>
@@ -678,7 +648,6 @@ requestAnimationFrame(() => {
     </summary>
     <div class="lo-item-content">
       <div class="lo-item-evidence">Cookies, localStorage, and session data for login/state.</div>
-      <a href="{{site.baseurl}}/debug/application" class="lo-item-link">→ view dedicated page</a>
       <div class="lo-item-assess">Demo of the Application tab in use</div>
     </div>
   </details>
@@ -689,7 +658,6 @@ requestAnimationFrame(() => {
     </summary>
     <div class="lo-item-content">
       <div class="lo-item-evidence">Inspecting the canvas and surrounding DOM in the Elements panel.</div>
-      <a href="{{site.baseurl}}/debug/element" class="lo-item-link">→ view dedicated page</a>
       <div class="lo-item-assess">Demo of element-property inspection</div>
     </div>
   </details>
@@ -709,7 +677,6 @@ requestAnimationFrame(() => {
     </summary>
     <div class="lo-item-content">
       <div class="lo-item-evidence">Level completion, character interaction, and collision verified by play.</div>
-      <a href="{{site.baseurl}}/test/gameplay" class="lo-item-link">→ view dedicated page</a>
       <div class="lo-item-assess">Live demo of a clean playthrough</div>
     </div>
   </details>
@@ -720,7 +687,6 @@ requestAnimationFrame(() => {
     </summary>
     <div class="lo-item-content">
       <div class="lo-item-evidence">Leaderboard and NPC-AI APIs exercised against the live backend.</div>
-      <a href="{{site.baseurl}}/test/integration" class="lo-item-link">→ view dedicated page</a>
       <div class="lo-item-assess">Demo of score saves and AI responses</div>
     </div>
   </details>
@@ -731,7 +697,6 @@ requestAnimationFrame(() => {
     </summary>
     <div class="lo-item-content">
       <div class="lo-item-evidence"><code>try</code>/<code>catch</code> around API calls and network failures.</div>
-      <a href="{{site.baseurl}}/test/error-handling" class="lo-item-link">→ view dedicated page</a>
       <div class="lo-item-assess">Code review of fetch-failure handling</div>
     </div>
   </details>
