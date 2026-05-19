@@ -6,9 +6,7 @@ hide: true
 show_reading_time: false
 ---
 
-<script>
-  window.location.replace("{{ site.baseurl }}/homepage");
-</script>
+
 > Hey, I'm Kashyap (Kash) Tubati. I work toward becoming a thoughtful software engineer by shipping games, utilities, and small experiments in code.
 
 ### Development Environment
