@@ -34,7 +34,7 @@ show_reading_time: false
 
 <br>
 
-### My Lessons
+### Js Lessons
 
 > A few of the teaching artifacts I've put together along the way — click in to read them.
 
